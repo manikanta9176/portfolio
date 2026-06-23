@@ -218,17 +218,36 @@ export function SiteExperience() {
       </nav>
 
       <nav aria-label="Mobile section navigation" className="mobile-section-nav">
-        {navSections.map((section, index) => (
-          <a
-            aria-label={section.label}
-            className={`mobile-section-link ${index === activeIndex ? "mobile-section-link-active" : ""}`}
-            href={`#${section.id}`}
-            key={section.id}
-            title={section.label}
-          >
-            {section.number}
-          </a>
-        ))}
+        <div aria-label="Section progress" className="mobile-section-progress" role="group">
+          {navSections.map((section, index) => (
+            <a
+              aria-current={index === activeIndex ? "step" : undefined}
+              aria-label={section.label}
+              className={`mobile-section-progress-segment${
+                index <= activeIndex ? " mobile-section-progress-segment-done" : ""
+              }${index === activeIndex ? " mobile-section-progress-segment-active" : ""}`}
+              href={`#${section.id}`}
+              key={section.id}
+            />
+          ))}
+        </div>
+        <div className="mobile-section-links">
+          {navSections.map((section, index) => (
+            <a
+              aria-current={index === activeIndex ? "step" : undefined}
+              aria-label={section.label}
+              className={`mobile-section-link ${index === activeIndex ? "mobile-section-link-active" : ""}`}
+              href={`#${section.id}`}
+              key={section.id}
+              title={section.label}
+            >
+              <span className="mobile-section-link-number">{section.number}</span>
+              {index === activeIndex ? (
+                <span className="mobile-section-link-label">{section.label}</span>
+              ) : null}
+            </a>
+          ))}
+        </div>
       </nav>
 
       {paletteOpen ? (

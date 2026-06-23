@@ -335,7 +335,7 @@ main {
     grid-template-columns: 1fr auto;
     align-items: center;
     gap: 1rem;
-    padding: 0.75rem clamp(1rem, 3vw, 2rem);
+    padding: max(0.75rem, env(safe-area-inset-top)) clamp(1rem, 3vw, 2rem) 0.75rem;
     color: var(--ink);
     background: var(--header-bg);
     border-bottom: 1px solid transparent;
@@ -410,6 +410,17 @@ main {
     .site-command {
       padding: 0.5rem 0.7rem;
       font-size: 0.82rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .site-command {
+      padding: 0.45rem 0.55rem;
+      font-size: 0.75rem;
+    }
+
+    .site-mark {
+      flex-shrink: 0;
     }
   }
 
@@ -593,9 +604,12 @@ main {
     position: fixed;
     inset: 0;
     z-index: 90;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 1rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     background: rgba(17, 17, 17, 0.72);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
@@ -603,6 +617,10 @@ main {
 
   .palette-panel {
     width: min(42rem, 100%);
+    max-height: min(85dvh, 44rem);
+    overflow: auto;
+    margin: auto;
+    flex-shrink: 0;
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: rgba(236, 230, 218, 0.96);
     color: var(--ink);
@@ -857,6 +875,10 @@ main {
     }
   }
 
+  .journey-item > * {
+    min-width: 0;
+  }
+
   .journey-period {
     font-family: var(--font-ibm-plex-mono), monospace;
     font-size: 0.78rem;
@@ -991,6 +1013,8 @@ main {
     font-weight: 800;
     letter-spacing: -0.05em;
     line-height: 0.95;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
   }
 
   .project-copy {
@@ -1061,19 +1085,52 @@ main {
   .mobile-section-nav {
     position: fixed;
     right: 0.85rem;
-    bottom: 0.85rem;
+    bottom: max(0.85rem, env(safe-area-inset-bottom));
     left: 0.85rem;
     z-index: 45;
     display: none;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 0.35rem;
-    padding: 0.45rem;
+    gap: 0.45rem;
+    padding: 0.55rem;
     border: 1px solid var(--line);
-    border-radius: 999px;
+    border-radius: 1.25rem;
     background: var(--chrome-bg);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     box-shadow: 0 12px 32px rgba(17, 17, 17, 0.1);
+  }
+
+  .mobile-section-progress {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.3rem;
+    padding-inline: 0.15rem;
+  }
+
+  .mobile-section-progress-segment {
+    display: block;
+    height: 0.18rem;
+    border-radius: 999px;
+    background: rgba(17, 17, 17, 0.12);
+    transition: background 180ms ease;
+  }
+
+  .mobile-section-progress-segment-done {
+    background: rgba(17, 17, 17, 0.28);
+  }
+
+  .mobile-section-progress-segment-active {
+    background: var(--card-ink);
+  }
+
+  .mobile-section-progress-segment:focus-visible {
+    outline: 2px solid var(--card-ink);
+    outline-offset: 2px;
+  }
+
+  .mobile-section-links {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.35rem;
   }
 
   @media (max-width: 767px) {
@@ -1082,14 +1139,17 @@ main {
     }
 
     main {
-      padding-bottom: 5.5rem;
+      padding-bottom: 6.25rem;
     }
   }
 
   .mobile-section-link {
-    display: grid;
-    place-items: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
     min-height: 2.5rem;
+    padding-inline: 0.35rem;
     border-radius: 999px;
     font-family: var(--font-ibm-plex-mono), monospace;
     font-size: 0.62rem;
@@ -1099,6 +1159,18 @@ main {
     transition:
       background 180ms ease,
       color 180ms ease;
+  }
+
+  .mobile-section-link-number {
+    flex-shrink: 0;
+  }
+
+  .mobile-section-link-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
   }
 
   .mobile-section-link-active {
