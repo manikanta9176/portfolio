@@ -4,17 +4,22 @@ import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { PortfolioPicker } from "@/components/portfolio-picker";
 import { useActiveSection } from "@/hooks/use-active-section";
+import { getPortfolioSectionIds } from "@/lib/portfolio-sections";
 import { commands } from "@/lib/profile";
 
-const sections = [
-  { id: "intro", label: "Intro" },
-  { id: "signal", label: "Signal" },
-  { id: "work", label: "Work" },
-  { id: "systems", label: "Systems" },
-  { id: "contact", label: "Contact" },
-] as const;
+const noirLabels: Record<string, string> = {
+  intro: "Intro",
+  signal: "Signal",
+  work: "Work",
+  systems: "Systems",
+  contact: "Contact",
+};
 
-const sectionIds = sections.map((section) => section.id);
+const sectionIds = getPortfolioSectionIds("noir");
+const sections = sectionIds.map((id) => ({
+  id,
+  label: noirLabels[id] ?? id,
+}));
 
 export function InteractiveLayer() {
   const activeSection = useActiveSection(sectionIds, "-38% 0px -50% 0px");

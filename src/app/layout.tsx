@@ -4,6 +4,7 @@ import { PortfolioProvider } from "@/portfolios/provider";
 import { PORTFOLIO_STORAGE_KEY, portfolioIds } from "@/portfolios/registry";
 import { siteConfig } from "@/lib/profile";
 import "./globals.css";
+import "./site-cursor.css";
 import "./portfolios.css";
 
 const syne = Syne({

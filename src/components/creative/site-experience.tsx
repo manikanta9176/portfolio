@@ -1,18 +1,17 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PortfolioPicker } from "@/components/portfolio-picker";
 import { PortfolioSwitcher } from "@/components/portfolio-switcher";
+import { useActiveSection } from "@/hooks/use-active-section";
 import { commands, navSections, siteConfig } from "@/lib/profile";
-import { SITE_CURSOR_SYNC } from "@/lib/site-cursor";
 
 export function SiteExperience() {
   const [ready, setReady] = useState(false);
-  const [activeSection, setActiveSection] = useState(navSections[0].id);
+  const sectionIds = useMemo(() => navSections.map((section) => section.id), []);
+  const activeSection = useActiveSection(sectionIds, "-42% 0px -45% 0px", ready);
   const [paletteOpen, setPaletteOpen] = useState(false);
-  const [cursor, setCursor] = useState({ x: 0, y: 0 });
-  const cursorRef = useRef({ x: 0, y: 0 });
   const [scrollProgress, setScrollProgress] = useState(0);
   const [scrolled, setScrolled] = useState(false);
 
@@ -21,32 +20,8 @@ export function SiteExperience() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  const syncCursor = (x: number, y: number) => {
-    cursorRef.current = { x, y };
-    setCursor({ x, y });
-  };
-
-  const openPalette = (x?: number, y?: number) => {
-    if (x !== undefined && y !== undefined) {
-      syncCursor(x, y);
-    } else {
-      setCursor(cursorRef.current);
-    }
-    setPaletteOpen(true);
-  };
-
   useEffect(() => {
-
     const controller = new AbortController();
-
-    const onPointerMove = (event: PointerEvent) => {
-      syncCursor(event.clientX, event.clientY);
-    };
-
-    const onCursorSync = (event: Event) => {
-      const { x, y } = (event as CustomEvent<{ x: number; y: number }>).detail;
-      syncCursor(x, y);
-    };
 
     const onScroll = () => {
       const max =
@@ -58,12 +33,7 @@ export function SiteExperience() {
     const onKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        setPaletteOpen((open) => {
-          if (!open) {
-            setCursor(cursorRef.current);
-          }
-          return !open;
-        });
+        setPaletteOpen((open) => !open);
       }
 
       if (event.key === "Escape") {
@@ -71,13 +41,6 @@ export function SiteExperience() {
       }
     };
 
-    window.addEventListener("pointermove", onPointerMove, {
-      passive: true,
-      signal: controller.signal,
-    });
-    window.addEventListener(SITE_CURSOR_SYNC, onCursorSync, {
-      signal: controller.signal,
-    });
     window.addEventListener("scroll", onScroll, {
       passive: true,
       signal: controller.signal,
@@ -89,35 +52,16 @@ export function SiteExperience() {
   }, []);
 
   useEffect(() => {
-    document.body.dataset.mood = activeSection;
-    document.body.classList.add("custom-cursor");
+    if (!paletteOpen) {
+      return;
+    }
+
+    document.body.classList.add("overlay-open");
 
     return () => {
-      delete document.body.dataset.mood;
-      document.body.classList.remove("custom-cursor");
+      document.body.classList.remove("overlay-open");
     };
-  }, [activeSection]);
-
-  useEffect(() => {
-    const observers = navSections
-      .map((section) => document.getElementById(section.id))
-      .filter((section): section is HTMLElement => Boolean(section))
-      .map((section) => {
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              setActiveSection(section.id);
-            }
-          },
-          { rootMargin: "-42% 0px -45% 0px", threshold: 0.01 },
-        );
-
-        observer.observe(section);
-        return observer;
-      });
-
-    return () => observers.forEach((observer) => observer.disconnect());
-  }, [ready]);
+  }, [paletteOpen]);
 
   const activeIndex = useMemo(
     () => Math.max(0, navSections.findIndex((section) => section.id === activeSection)),
@@ -162,12 +106,6 @@ export function SiteExperience() {
         style={{ transform: `scaleX(${scrollProgress})` }}
       />
 
-      <div
-        aria-hidden="true"
-        className={`cursor-ring hidden lg:block ${paletteOpen ? "cursor-ring-elevated" : ""}`}
-        style={{ transform: `translate(${cursor.x}px, ${cursor.y}px)` }}
-      />
-
       <header className={`site-header ${scrolled ? "site-header-scrolled" : ""}`}>
         <div className="site-header-start">
           <a className="site-mark" href="#intro">
@@ -184,7 +122,7 @@ export function SiteExperience() {
           <PortfolioPicker className="site-command" label="Portfolios" showMeta={false} />
           <button
             className="site-command"
-            onClick={(event) => openPalette(event.clientX, event.clientY)}
+            onClick={() => setPaletteOpen(true)}
             type="button"
           >
             Connect
@@ -254,7 +192,6 @@ export function SiteExperience() {
         <div
           aria-modal="true"
           className="palette-backdrop"
-          onPointerMove={(event) => syncCursor(event.clientX, event.clientY)}
           role="dialog"
         >
           <div className="palette-panel">

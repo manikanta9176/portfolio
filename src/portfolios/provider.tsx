@@ -98,6 +98,7 @@ function applyPortfolio(id: PortfolioId) {
   sessionStorage.setItem(PORTFOLIO_STORAGE_KEY, id);
   document.documentElement.dataset.portfolio = id;
   delete document.body.dataset.mood;
+  delete document.body.dataset.cursorSection;
   document.body.classList.remove("custom-cursor");
   window.scrollTo({ top: 0, behavior: "auto" });
   emitChange();

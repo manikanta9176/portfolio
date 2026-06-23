@@ -1,6 +1,7 @@
 "use client";
 
 import type { ComponentType } from "react";
+import { PortfolioCursor } from "@/components/portfolio-cursor";
 import { ScrollOffsetSync } from "@/components/scroll-offset-sync";
 import { usePortfolio } from "@/portfolios/provider";
 import { BrutalistPortfolio } from "@/portfolios/brutalist";
@@ -34,6 +35,7 @@ export function PortfolioRouter() {
   const View = portfolioViews[portfolioId];
   return (
     <>
+      <PortfolioCursor />
       <ScrollOffsetSync />
       <View />
     </>

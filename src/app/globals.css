@@ -54,7 +54,7 @@ body {
     color 620ms ease;
 }
 
-body[data-mood="intro"] {
+html[data-portfolio="editorial"] body[data-mood="intro"] {
   --paper: #ece6da;
   --paper-deep: #ddd4c4;
   --ink: #111111;
@@ -64,7 +64,7 @@ body[data-mood="intro"] {
   --line: rgba(17, 17, 17, 0.12);
 }
 
-body[data-mood="craft"] {
+html[data-portfolio="editorial"] body[data-mood="craft"] {
   --paper: #f4efe6;
   --paper-deep: #e7dfd1;
   --ink: #101820;
@@ -77,7 +77,7 @@ body[data-mood="craft"] {
   --chrome-bg: rgba(244, 239, 230, 0.94);
 }
 
-body[data-mood="journey"] {
+html[data-portfolio="editorial"] body[data-mood="journey"] {
   --paper: #e8e2d6;
   --paper-deep: #d9cfbf;
   --ink: #17120f;
@@ -90,7 +90,7 @@ body[data-mood="journey"] {
   --chrome-bg: rgba(232, 226, 214, 0.94);
 }
 
-body[data-mood="work"] {
+html[data-portfolio="editorial"] body[data-mood="work"] {
   --paper: #161616;
   --paper-deep: #222222;
   --ink: #f3eee4;
@@ -103,7 +103,7 @@ body[data-mood="work"] {
   --chrome-bg: rgba(22, 22, 22, 0.92);
 }
 
-body[data-mood="contact"] {
+html[data-portfolio="editorial"] body[data-mood="contact"] {
   --paper: #ddd4c4;
   --paper-deep: #cfc3ae;
   --ink: #111111;
@@ -169,35 +169,35 @@ main {
     pointer-events: none;
   }
 
-  body[data-mood="intro"] .mood-band-intro::before {
+  html[data-portfolio="editorial"] body[data-mood="intro"] .mood-band-intro::before {
     opacity: 1;
     background:
       radial-gradient(circle at 12% 18%, rgba(214, 40, 40, 0.08), transparent 42%),
       radial-gradient(circle at 88% 72%, rgba(244, 162, 97, 0.1), transparent 38%);
   }
 
-  body[data-mood="craft"] .mood-band-craft::before {
+  html[data-portfolio="editorial"] body[data-mood="craft"] .mood-band-craft::before {
     opacity: 1;
     background:
       linear-gradient(180deg, rgba(82, 183, 136, 0.08), transparent 55%),
       radial-gradient(circle at 92% 12%, rgba(42, 157, 143, 0.1), transparent 34%);
   }
 
-  body[data-mood="journey"] .mood-band-journey::before {
+  html[data-portfolio="editorial"] body[data-mood="journey"] .mood-band-journey::before {
     opacity: 1;
     background:
       linear-gradient(135deg, rgba(188, 108, 37, 0.08), transparent 48%),
       radial-gradient(circle at 8% 88%, rgba(221, 161, 94, 0.12), transparent 36%);
   }
 
-  body[data-mood="work"] .mood-band-work::before {
+  html[data-portfolio="editorial"] body[data-mood="work"] .mood-band-work::before {
     opacity: 1;
     background:
       radial-gradient(circle at 18% 0%, rgba(244, 162, 97, 0.14), transparent 42%),
       radial-gradient(circle at 82% 100%, rgba(231, 111, 81, 0.1), transparent 40%);
   }
 
-  body[data-mood="contact"] .mood-band-contact::before {
+  html[data-portfolio="editorial"] body[data-mood="contact"] .mood-band-contact::before {
     opacity: 1;
     background:
       linear-gradient(180deg, rgba(214, 40, 40, 0.05), transparent 60%),
@@ -292,52 +292,6 @@ main {
     height: 3px;
     transform-origin: left center;
     background: linear-gradient(90deg, var(--accent), var(--accent-soft));
-  }
-
-  .cursor-ring {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 70;
-    width: 1.1rem;
-    height: 1.1rem;
-    margin: -0.55rem 0 0 -0.55rem;
-    border: 1.5px solid var(--ink);
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--paper) 28%, transparent);
-    box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--paper) 55%, transparent),
-      0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
-    pointer-events: none;
-    transition: transform 80ms linear;
-    will-change: transform;
-  }
-
-  .cursor-ring-elevated,
-  body.overlay-open .cursor-ring {
-    z-index: 150;
-  }
-
-  @media (min-width: 1024px) {
-    body.custom-cursor,
-    body.custom-cursor a,
-    body.custom-cursor button {
-      cursor: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .cursor-ring {
-      display: none !important;
-    }
-
-    @media (min-width: 1024px) {
-      body.custom-cursor,
-      body.custom-cursor a,
-      body.custom-cursor button {
-        cursor: auto;
-      }
-    }
   }
 
   .site-header {
@@ -449,7 +403,7 @@ main {
     color: var(--accent);
   }
 
-  body[data-mood="work"] .header-chapter {
+  html[data-portfolio="editorial"] body[data-mood="work"] .header-chapter {
     background: rgba(255, 255, 255, 0.06);
   }
 
