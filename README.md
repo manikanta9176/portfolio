@@ -25,8 +25,8 @@ The design leans dark, cinematic, precise, and technical without feeling like a 
 ## Local Development
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
@@ -34,8 +34,8 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Useful Commands
 
 ```bash
-npm run lint
-npm run build
+pnpm lint
+pnpm build
 ```
 
 ## Content Maintenance
@@ -92,13 +92,7 @@ The project is ready for Vercel:
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
