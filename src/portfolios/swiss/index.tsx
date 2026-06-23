@@ -23,16 +23,34 @@ const sectionIds = sections.map((section) => section.id);
 
 function SwissIndexLink({
   active,
+  activeIndex,
+  index,
   onNavigate,
   section,
 }: {
   active: string;
+  activeIndex?: number;
+  index?: number;
   onNavigate?: () => void;
   section: (typeof sections)[number];
 }) {
+  const isActive = active === section.id;
+  const segmentClasses = [
+    isActive ? "swiss-index-link-active" : "",
+    index !== undefined && activeIndex !== undefined && index > 0 && index <= activeIndex
+      ? "rail-segment-before"
+      : "",
+    index !== undefined && activeIndex !== undefined && index < activeIndex
+      ? "rail-segment-after"
+      : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <a
-      className={active === section.id ? "swiss-index-link-active" : ""}
+      aria-current={isActive ? "step" : undefined}
+      className={segmentClasses || undefined}
       href={`#${section.id}`}
       onClick={onNavigate}
     >
@@ -68,9 +86,17 @@ export function SwissPortfolio() {
         <p className="swiss-brand">MP</p>
 
         <nav aria-label="Section navigation" className="swiss-index-nav">
-          {sections.map((section) => (
-            <SwissIndexLink active={active} key={section.id} section={section} />
-          ))}
+          <div className="swiss-index-nav-stops">
+            {sections.map((section, index) => (
+              <SwissIndexLink
+                active={active}
+                activeIndex={activeIndex}
+                index={index}
+                key={section.id}
+                section={section}
+              />
+            ))}
+          </div>
         </nav>
 
         <div className="swiss-index-mobile">
@@ -137,7 +163,9 @@ export function SwissPortfolio() {
           ) : null}
         </div>
 
-        <PortfolioPicker className="swiss-picker-trigger" label="Layouts" showMeta={false} />
+        <div className="swiss-index-footer">
+          <PortfolioPicker className="swiss-picker-trigger" label="Layouts" showMeta={false} />
+        </div>
       </aside>
 
       <main className="swiss-main">

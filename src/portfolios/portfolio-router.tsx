@@ -1,6 +1,7 @@
 "use client";
 
 import type { ComponentType } from "react";
+import { ScrollOffsetSync } from "@/components/scroll-offset-sync";
 import { usePortfolio } from "@/portfolios/provider";
 import { BrutalistPortfolio } from "@/portfolios/brutalist";
 import { BentoPortfolio } from "@/portfolios/bento";
@@ -31,5 +32,10 @@ export function PortfolioRouter() {
   }
 
   const View = portfolioViews[portfolioId];
-  return <View />;
+  return (
+    <>
+      <ScrollOffsetSync />
+      <View />
+    </>
+  );
 }

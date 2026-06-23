@@ -24,18 +24,32 @@ const sectionIds = sections.map((section) => section.id);
 
 function BrutalistStopLink({
   active,
+  activeIndex,
   index,
   onNavigate,
   section,
 }: {
   active: string;
+  activeIndex?: number;
   index: number;
   onNavigate?: () => void;
   section: (typeof sections)[number];
 }) {
+  const isActive = active === section.id;
+  const segmentClasses = [
+    isActive ? "brutalist-rail-link-active" : "",
+    activeIndex !== undefined && index > 0 && index <= activeIndex
+      ? "rail-segment-before"
+      : "",
+    activeIndex !== undefined && index < activeIndex ? "rail-segment-after" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <a
-      className={active === section.id ? "brutalist-rail-link-active" : ""}
+      aria-current={isActive ? "step" : undefined}
+      className={segmentClasses || undefined}
       href={`#${section.id}`}
       onClick={onNavigate}
     >
@@ -68,14 +82,17 @@ export function BrutalistPortfolio() {
         ref={ref}
       >
         <nav aria-label="Section navigation" className="brutalist-rail-nav">
-          {sections.map((section, index) => (
-            <BrutalistStopLink
-              active={active}
-              index={index}
-              key={section.id}
-              section={section}
-            />
-          ))}
+          <div className="brutalist-rail-nav-stops">
+            {sections.map((section, index) => (
+              <BrutalistStopLink
+                active={active}
+                activeIndex={activeIndex}
+                index={index}
+                key={section.id}
+                section={section}
+              />
+            ))}
+          </div>
         </nav>
 
         <div className="brutalist-rail-mobile">
@@ -131,6 +148,7 @@ export function BrutalistPortfolio() {
               {sections.map((section, index) => (
                 <BrutalistStopLink
                   active={active}
+                  activeIndex={activeIndex}
                   index={index}
                   key={section.id}
                   onNavigate={close}
@@ -141,9 +159,12 @@ export function BrutalistPortfolio() {
           ) : null}
         </div>
 
-        <PortfolioPicker className="brutalist-rail-picker" label="Switch" showMeta={false} />
+        <div className="brutalist-rail-footer">
+          <PortfolioPicker className="brutalist-rail-picker" label="Switch" showMeta={false} />
+        </div>
       </aside>
 
+      <div className="brutalist-main">
       <header className="brutalist-hero" id="intro">
         <p className="brutalist-kicker">{siteConfig.role}</p>
         <h1>
@@ -226,6 +247,7 @@ export function BrutalistPortfolio() {
           </a>
         </div>
       </section>
+      </div>
     </div>
   );
 }

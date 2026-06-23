@@ -23,18 +23,32 @@ const sectionIds = stops.map((stop) => stop.id);
 
 function TimelineStopLink({
   active,
+  activeIndex,
   index,
   onNavigate,
   stop,
 }: {
   active: string;
+  activeIndex?: number;
   index: number;
   onNavigate?: () => void;
   stop: (typeof stops)[number];
 }) {
+  const isActive = active === stop.id;
+  const segmentClasses = [
+    isActive ? "timeline-node-active" : "",
+    activeIndex !== undefined && index > 0 && index <= activeIndex
+      ? "rail-segment-before"
+      : "",
+    activeIndex !== undefined && index < activeIndex ? "rail-segment-after" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <a
-      className={active === stop.id ? "timeline-node-active" : ""}
+      aria-current={isActive ? "step" : undefined}
+      className={segmentClasses || undefined}
       href={`#${stop.id}`}
       onClick={onNavigate}
     >
@@ -70,9 +84,17 @@ export function TimelinePortfolio() {
         ref={ref}
       >
         <nav aria-label="Section navigation" className="timeline-rail-nav">
-          {stops.map((stop, index) => (
-            <TimelineStopLink active={active} index={index} key={stop.id} stop={stop} />
-          ))}
+          <div className="timeline-rail-nav-stops">
+            {stops.map((stop, index) => (
+              <TimelineStopLink
+                active={active}
+                activeIndex={activeIndex}
+                index={index}
+                key={stop.id}
+                stop={stop}
+              />
+            ))}
+          </div>
         </nav>
 
         <div className="timeline-rail-mobile">
@@ -130,6 +152,7 @@ export function TimelinePortfolio() {
               {stops.map((stop, index) => (
                 <TimelineStopLink
                   active={active}
+                  activeIndex={activeIndex}
                   index={index}
                   key={stop.id}
                   onNavigate={close}
@@ -140,7 +163,9 @@ export function TimelinePortfolio() {
           ) : null}
         </div>
 
-        <PortfolioPicker className="timeline-picker-trigger" label="Switch" showMeta={false} />
+        <div className="timeline-rail-footer">
+          <PortfolioPicker className="timeline-picker-trigger" label="Switch" showMeta={false} />
+        </div>
       </aside>
 
       <main className="timeline-main">

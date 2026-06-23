@@ -15,6 +15,8 @@
   --chrome-bg: rgba(236, 230, 218, 0.94);
   --background: var(--paper);
   --foreground: var(--ink);
+  --chrome-height: 0px;
+  --scroll-gap: 0px;
 }
 
 @theme inline {
@@ -27,6 +29,19 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--chrome-height) + var(--scroll-gap));
+}
+
+section[id],
+header[id],
+.terminal-prompt,
+.section-kicker,
+.timeline-kicker,
+.brutalist-kicker,
+.swiss-kicker,
+.bento-kicker,
+.display-title {
+  scroll-margin-top: calc(var(--chrome-height) + var(--scroll-gap));
 }
 
 body {
@@ -696,7 +711,8 @@ main {
     gap: 2rem;
     min-height: 100svh;
     align-items: end;
-    padding-block: clamp(5.5rem, 12vh, 8rem) clamp(2rem, 5vh, 3.5rem);
+    padding-block: calc(var(--chrome-height) + var(--scroll-gap) + clamp(1rem, 4vh, 2rem))
+      clamp(2rem, 5vh, 3.5rem);
   }
 
   .hero-name-line {
