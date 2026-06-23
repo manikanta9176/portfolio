@@ -19,21 +19,19 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 72,
-          color: "white",
-          background:
-            "radial-gradient(circle at 20% 20%, rgba(34,211,238,0.42), transparent 340px), radial-gradient(circle at 82% 16%, rgba(168,85,247,0.34), transparent 320px), #030712",
+          color: "#111111",
+          background: "#ece6da",
           fontFamily: "Arial",
         }}
       >
         <div
           style={{
             display: "flex",
-            alignItems: "center",
             justifyContent: "space-between",
-            fontSize: 28,
+            fontSize: 24,
             letterSpacing: 8,
             textTransform: "uppercase",
-            color: "#a5f3fc",
+            color: "#5f5950",
           }}
         >
           <span>{siteConfig.location}</span>
@@ -42,29 +40,42 @@ export default function OpenGraphImage() {
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div
             style={{
-              fontSize: 96,
+              fontSize: 118,
               fontWeight: 900,
               letterSpacing: -8,
-              lineHeight: 0.92,
-              maxWidth: 980,
+              lineHeight: 0.82,
+              textTransform: "uppercase",
             }}
           >
-            Potnuru Manikanta
+            Potnuru
+          </div>
+          <div
+            style={{
+              fontSize: 118,
+              fontWeight: 900,
+              letterSpacing: -8,
+              lineHeight: 0.82,
+              textTransform: "uppercase",
+              color: "transparent",
+              WebkitTextStroke: "2px #111111",
+            }}
+          >
+            Manikanta
           </div>
           <div
             style={{
               marginTop: 28,
-              fontSize: 34,
-              color: "#cbd5e1",
-              lineHeight: 1.28,
-              maxWidth: 920,
+              fontSize: 30,
+              color: "#5f5950",
+              lineHeight: 1.35,
+              maxWidth: 900,
             }}
           >
             Full-stack product engineer building fast interfaces, reliable
             backends, and deployment-ready systems.
           </div>
         </div>
-        <div style={{ display: "flex", gap: 18, fontSize: 25, color: "#e2e8f0" }}>
+        <div style={{ display: "flex", gap: 18, fontSize: 22, color: "#111111" }}>
           <span>React</span>
           <span>/</span>
           <span>Next.js</span>
@@ -72,8 +83,6 @@ export default function OpenGraphImage() {
           <span>TypeScript</span>
           <span>/</span>
           <span>GraphQL</span>
-          <span>/</span>
-          <span>Deployment</span>
         </div>
       </div>
     ),
