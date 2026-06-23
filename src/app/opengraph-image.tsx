@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { siteConfig } from "@/lib/profile";
 
 export const size = {
@@ -8,10 +10,14 @@ export const size = {
 
 export const contentType = "image/png";
 
-const accent = "#f5a623";
-const accentGlow = "rgba(245, 166, 35, 0.55)";
+export const alt = `${siteConfig.name} portfolio preview`;
 
-export default function OpenGraphImage() {
+const accent = "#f59e0b";
+const accentSoft = "rgba(245, 158, 11, 0.35)";
+
+export default async function OpenGraphImage() {
+  const syne = await readFile(join(process.cwd(), "public/fonts/syne-800.woff"));
+
   const titleName = `${siteConfig.displayName[1]} ${siteConfig.displayName[0]}`;
 
   return new ImageResponse(
@@ -23,8 +29,8 @@ export default function OpenGraphImage() {
           display: "flex",
           position: "relative",
           overflow: "hidden",
-          background: "#121212",
-          fontFamily: "Arial, Helvetica, sans-serif",
+          background: "#0b0b0b",
+          fontFamily: "Syne",
         }}
       >
         <div
@@ -32,58 +38,63 @@ export default function OpenGraphImage() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            width: "58%",
+            width: "56%",
             height: "100%",
-            padding: "64px 72px",
+            padding: "56px 64px",
             background:
-              "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 42%, rgba(0,0,0,0.15) 100%), #2a2a2a",
+              "linear-gradient(160deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.015) 38%, rgba(0,0,0,0.2) 100%), #242424",
           }}
         >
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: 8,
-              maxWidth: 620,
-              color: "#ffffff",
-              fontSize: 52,
-              fontWeight: 800,
-              lineHeight: 1.08,
-              letterSpacing: -1,
+              gap: 18,
+              maxWidth: 580,
             }}
           >
-            <span>{titleName} |</span>
-            <span>{siteConfig.role}</span>
-          </div>
+            <div
+              style={{
+                display: "flex",
+                color: "#ffffff",
+                fontSize: 46,
+                fontWeight: 800,
+                lineHeight: 1.12,
+                letterSpacing: -1.5,
+              }}
+            >
+              {`${titleName} | ${siteConfig.role}`}
+            </div>
 
-          <div
-            style={{
-              display: "flex",
-              marginTop: 48,
-              borderRadius: 999,
-              padding: "22px 42px",
-              background: accent,
-              color: "#151515",
-              fontSize: 34,
-              fontWeight: 800,
-              letterSpacing: 1,
-              boxShadow: `0 0 28px ${accentGlow}, 0 0 56px rgba(245, 166, 35, 0.28)`,
-            }}
-          >
-            Read More
+            <div
+              style={{
+                display: "flex",
+                alignSelf: "flex-start",
+                borderRadius: 999,
+                padding: "16px 34px",
+                background: accent,
+                color: "#111111",
+                fontSize: 28,
+                fontWeight: 800,
+                letterSpacing: 0.5,
+                boxShadow: `0 0 0 1px rgba(255,255,255,0.08), 0 10px 40px ${accentSoft}`,
+              }}
+            >
+              Read More
+            </div>
           </div>
         </div>
 
         <div
           style={{
             position: "absolute",
-            top: -80,
-            left: "54%",
-            width: 28,
-            height: 900,
+            top: -60,
+            left: "55.5%",
+            width: 18,
+            height: 820,
             background: accent,
-            transform: "rotate(14deg)",
-            boxShadow: `0 0 24px ${accentGlow}`,
+            transform: "rotate(13deg)",
+            boxShadow: `0 0 30px ${accentSoft}`,
           }}
         />
 
@@ -92,30 +103,39 @@ export default function OpenGraphImage() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            width: "42%",
+            width: "44%",
             height: "100%",
-            padding: "56px 48px 52px 64px",
-            background: "#101010",
+            padding: "48px 52px 44px 72px",
+            background: "#0f0f0f",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 22,
+              overflow: "hidden",
+            }}
+          >
             <div
               style={{
-                fontSize: 92,
+                fontSize: 118,
                 fontWeight: 800,
-                lineHeight: 0.95,
-                letterSpacing: -4,
-                color: "#f3f3f3",
+                lineHeight: 0.88,
+                letterSpacing: -6,
+                color: "transparent",
+                WebkitTextStroke: "2px rgba(255,255,255,0.92)",
+                textTransform: "uppercase",
               }}
             >
               {siteConfig.displayName[0]}
             </div>
             <div
               style={{
-                fontSize: 34,
+                fontSize: 30,
                 lineHeight: 1.35,
-                color: "rgba(255,255,255,0.72)",
-                maxWidth: 420,
+                color: "rgba(255,255,255,0.78)",
+                maxWidth: 430,
               }}
             >
               {siteConfig.headline}
@@ -126,25 +146,36 @@ export default function OpenGraphImage() {
             style={{
               display: "flex",
               flexWrap: "wrap",
-              gap: 10,
-              fontSize: 28,
-              fontWeight: 700,
-              color: "rgba(255,255,255,0.88)",
+              gap: 8,
+              fontSize: 24,
+              fontWeight: 800,
+              color: "rgba(255,255,255,0.9)",
+              letterSpacing: 0.5,
             }}
           >
             <span>React</span>
-            <span style={{ color: "rgba(255,255,255,0.35)" }}>/</span>
+            <span style={{ color: "rgba(255,255,255,0.28)" }}>/</span>
             <span>Next.js</span>
-            <span style={{ color: "rgba(255,255,255,0.35)" }}>/</span>
+            <span style={{ color: "rgba(255,255,255,0.28)" }}>/</span>
             <span>TypeScript</span>
-            <span style={{ color: "rgba(255,255,255,0.35)" }}>/</span>
+            <span style={{ color: "rgba(255,255,255,0.28)" }}>/</span>
             <span>GraphQL</span>
-            <span style={{ color: "rgba(255,255,255,0.35)" }}>/</span>
+            <span style={{ color: "rgba(255,255,255,0.28)" }}>/</span>
             <span>Deployment</span>
           </div>
         </div>
       </div>
     ),
-    size,
+    {
+      ...size,
+      fonts: [
+        {
+          name: "Syne",
+          data: syne,
+          style: "normal",
+          weight: 800,
+        },
+      ],
+    },
   );
 }
