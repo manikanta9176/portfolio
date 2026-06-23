@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
-import { DM_Sans, IBM_Plex_Mono, Syne } from "next/font/google";
+import { DM_Sans, IBM_Plex_Mono, JetBrains_Mono, Syne } from "next/font/google";
+import { PortfolioProvider } from "@/portfolios/provider";
+import { PORTFOLIO_STORAGE_KEY, portfolioIds } from "@/portfolios/registry";
 import { siteConfig } from "@/lib/profile";
 import "./globals.css";
+import "./portfolios.css";
 
 const syne = Syne({
   variable: "--font-syne",
@@ -19,6 +22,12 @@ const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-ibm-plex-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -101,17 +110,25 @@ export default function RootLayout({
     ],
   };
 
+  const portfolioInitScript = `(function(){var k=${JSON.stringify(PORTFOLIO_STORAGE_KEY)};var t=${JSON.stringify(portfolioIds)};var s=sessionStorage.getItem(k);if(!s||t.indexOf(s)<0){s=t[Math.floor(Math.random()*t.length)];sessionStorage.setItem(k,s);}document.documentElement.dataset.portfolio=s;})();`;
+
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${dmSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      className={`${syne.variable} ${dmSans.variable} ${ibmPlexMono.variable} ${jetBrainsMono.variable} h-full antialiased`}
+      data-portfolio="editorial"
+      suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
+        <script
+          dangerouslySetInnerHTML={{ __html: portfolioInitScript }}
+          suppressHydrationWarning
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-        {children}
+        <PortfolioProvider>{children}</PortfolioProvider>
       </body>
     </html>
   );
