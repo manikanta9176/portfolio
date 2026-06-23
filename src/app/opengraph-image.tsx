@@ -1,6 +1,4 @@
 import { ImageResponse } from "next/og";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { siteConfig } from "@/lib/profile";
 
 export const size = {
@@ -10,17 +8,7 @@ export const size = {
 
 export const contentType = "image/png";
 
-export const alt = `${siteConfig.name} portfolio preview`;
-
-const paper = "#ece6da";
-const paperDeep = "#ddd4c4";
-const ink = "#111111";
-const muted = "#5f5950";
-const accent = "#d62828";
-
-export default async function OpenGraphImage() {
-  const syne = await readFile(join(process.cwd(), "public/fonts/syne-800.woff"));
-
+export default function OpenGraphImage() {
   return new ImageResponse(
     (
       <div
@@ -30,103 +18,62 @@ export default async function OpenGraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "56px 64px 52px",
-          background: `linear-gradient(145deg, ${paper} 0%, ${paperDeep} 100%)`,
-          color: ink,
-          fontFamily: "Syne",
+          padding: 72,
+          color: "#111111",
+          background: "#ece6da",
+          fontFamily: "Arial",
         }}
       >
         <div
           style={{
             display: "flex",
-            alignItems: "center",
             justifyContent: "space-between",
+            fontSize: 24,
+            letterSpacing: 8,
+            textTransform: "uppercase",
+            color: "#5f5950",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              fontSize: 22,
-              fontWeight: 800,
-              letterSpacing: 6,
-              textTransform: "uppercase",
-              color: muted,
-            }}
-          >
-            {siteConfig.name}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 22,
-              fontWeight: 800,
-              letterSpacing: 5,
-              textTransform: "uppercase",
-              color: muted,
-            }}
-          >
-            {siteConfig.role}
-          </div>
+          <span>{siteConfig.name}</span>
+          <span>{siteConfig.role}</span>
         </div>
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 0,
-            marginTop: -12,
-          }}
-        >
+        <div style={{ display: "flex", flexDirection: "column" }}>
           <div
             style={{
-              display: "flex",
-              fontSize: 132,
-              fontWeight: 800,
-              lineHeight: 0.84,
+              fontSize: 118,
+              fontWeight: 900,
               letterSpacing: -8,
+              lineHeight: 0.82,
               textTransform: "uppercase",
-              color: ink,
             }}
           >
             {siteConfig.displayName[0]}
           </div>
           <div
             style={{
-              display: "flex",
-              fontSize: 132,
-              fontWeight: 800,
-              lineHeight: 0.84,
+              fontSize: 118,
+              fontWeight: 900,
               letterSpacing: -8,
+              lineHeight: 0.82,
               textTransform: "uppercase",
               color: "transparent",
-              WebkitTextStroke: `2px ${ink}`,
+              WebkitTextStroke: "2px #111111",
             }}
           >
             {siteConfig.displayName[1]}
           </div>
           <div
             style={{
-              display: "flex",
-              width: 72,
-              height: 6,
               marginTop: 28,
-              background: accent,
-            }}
-          />
-          <div
-            style={{
-              display: "flex",
-              marginTop: 24,
-              maxWidth: 920,
               fontSize: 30,
+              color: "#5f5950",
               lineHeight: 1.35,
-              color: muted,
+              maxWidth: 900,
             }}
           >
             {siteConfig.headline}
           </div>
         </div>
-
         <div
           style={{
             display: "flex",
@@ -134,54 +81,29 @@ export default async function OpenGraphImage() {
             justifyContent: "space-between",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              gap: 14,
-              fontSize: 24,
-              fontWeight: 800,
-              color: ink,
-            }}
-          >
+          <div style={{ display: "flex", gap: 18, fontSize: 22, color: "#111111" }}>
             <span>React</span>
-            <span style={{ color: "rgba(17,17,17,0.28)" }}>/</span>
+            <span>/</span>
             <span>Next.js</span>
-            <span style={{ color: "rgba(17,17,17,0.28)" }}>/</span>
+            <span>/</span>
             <span>TypeScript</span>
-            <span style={{ color: "rgba(17,17,17,0.28)" }}>/</span>
+            <span>/</span>
             <span>GraphQL</span>
           </div>
-
           <div
             style={{
               display: "flex",
-              alignItems: "center",
-              gap: 12,
-              borderRadius: 999,
-              padding: "14px 28px",
-              background: ink,
-              color: paper,
-              fontSize: 24,
-              fontWeight: 800,
-              letterSpacing: 1,
+              fontSize: 20,
+              letterSpacing: 6,
               textTransform: "uppercase",
+              color: "#5f5950",
             }}
           >
-            Open portfolio
+            View portfolio →
           </div>
         </div>
       </div>
     ),
-    {
-      ...size,
-      fonts: [
-        {
-          name: "Syne",
-          data: syne,
-          style: "normal",
-          weight: 800,
-        },
-      ],
-    },
+    size,
   );
 }

@@ -10,8 +10,10 @@ export const siteConfig = {
   bioProfile: "https://profile.manikanta.net/",
   headline:
     "Full-stack product engineer building fast interfaces, reliable backends, and deployment-ready systems.",
+  metaDescription:
+    "Manikanta Potnuru — senior full-stack developer. React, Next.js, TypeScript, GraphQL, and deployment-ready systems.",
   description:
-    "Manikanta Potnuru portfolio. Senior full-stack developer building React, Next.js, TypeScript apps, GraphQL APIs, and deployment-ready systems.",
+    "Manikanta Potnuru — senior full-stack developer. React, Next.js, TypeScript, GraphQL, and deployment-ready systems.",
 };
 
 export function formatTimelineOrganization(item: {

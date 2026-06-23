@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     default: `${siteConfig.name} | Senior Full Stack Developer`,
     template: `%s | ${siteConfig.name}`,
   },
-  description: siteConfig.description,
+  description: siteConfig.metaDescription,
   applicationName: `${siteConfig.name} Portfolio`,
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
