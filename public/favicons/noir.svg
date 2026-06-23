@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="MP">
+<style>@font-face{font-family:"Syne";font-style:normal;font-weight:800;src:url("/fonts/syne-800.woff") format("woff");}</style>
+<defs>
+  <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="0" stdDeviation="1.2" flood-color="#67e8f9" flood-opacity="0.55"/>
+  </filter>
+</defs>
+<rect width="32" height="32" rx="8" fill="#030712"/>
+<text x="16" y="22" text-anchor="middle" fill="#f8fafc" font-family="'Syne', sans-serif" font-weight="800" font-size="14" letter-spacing="0.6" filter="url(#glow)">MP</text>
+</svg>

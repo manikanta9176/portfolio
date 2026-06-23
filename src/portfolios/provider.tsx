@@ -15,6 +15,7 @@ import {
   portfolios,
 } from "./registry";
 import type { PortfolioDefinition, PortfolioId } from "./types";
+import { syncPortfolioFavicon } from "@/lib/portfolio-favicons";
 
 interface PortfolioContextValue {
   portfolio: PortfolioDefinition;
@@ -97,6 +98,7 @@ function applyPortfolio(id: PortfolioId) {
   snapshot = { portfolioId: id, ready: true };
   sessionStorage.setItem(PORTFOLIO_STORAGE_KEY, id);
   document.documentElement.dataset.portfolio = id;
+  syncPortfolioFavicon(id);
   delete document.body.dataset.mood;
   delete document.body.dataset.cursorSection;
   document.body.classList.remove("custom-cursor");

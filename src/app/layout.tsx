@@ -78,6 +78,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteConfig.url,
   },
+  icons: {
+    icon: [{ url: "/favicons/editorial.svg", type: "image/svg+xml" }],
+    shortcut: [{ url: "/favicons/editorial.svg", type: "image/svg+xml" }],
+  },
   category: "technology",
 };
 
@@ -115,7 +119,7 @@ export default function RootLayout({
     ],
   };
 
-  const portfolioInitScript = `(function(){var k=${JSON.stringify(PORTFOLIO_STORAGE_KEY)};var t=${JSON.stringify(portfolioIds)};var s=sessionStorage.getItem(k);if(!s||t.indexOf(s)<0){s=t[Math.floor(Math.random()*t.length)];sessionStorage.setItem(k,s);}document.documentElement.dataset.portfolio=s;})();`;
+  const portfolioInitScript = `(function(){var k=${JSON.stringify(PORTFOLIO_STORAGE_KEY)};var t=${JSON.stringify(portfolioIds)};var s=sessionStorage.getItem(k);if(!s||t.indexOf(s)<0){s=t[Math.floor(Math.random()*t.length)];sessionStorage.setItem(k,s);}document.documentElement.dataset.portfolio=s;var i=document.querySelector('link[data-portfolio-icon],link[rel=\"icon\"]');if(!i){i=document.createElement('link');i.rel='icon';document.head.appendChild(i);}i.type='image/svg+xml';i.setAttribute('data-portfolio-icon','true');i.href='/favicons/'+s+'.svg';})();`;
 
   return (
     <html
@@ -124,11 +128,13 @@ export default function RootLayout({
       data-portfolio="editorial"
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col">
+      <head>
         <script
           dangerouslySetInnerHTML={{ __html: portfolioInitScript }}
           suppressHydrationWarning
         />
+      </head>
+      <body className="flex min-h-full flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
