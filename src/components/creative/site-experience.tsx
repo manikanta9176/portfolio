@@ -2,6 +2,8 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { PortfolioPicker } from "@/components/portfolio-picker";
+import { PortfolioSwitcher } from "@/components/portfolio-switcher";
 import { commands, navSections, siteConfig } from "@/lib/profile";
 
 export function SiteExperience() {
@@ -79,6 +81,12 @@ export function SiteExperience() {
 
   useEffect(() => {
     document.body.dataset.mood = activeSection;
+    document.body.classList.add("custom-cursor");
+
+    return () => {
+      delete document.body.dataset.mood;
+      document.body.classList.remove("custom-cursor");
+    };
   }, [activeSection]);
 
   useEffect(() => {
@@ -164,6 +172,7 @@ export function SiteExperience() {
 
         <div className="site-header-end">
           <p className="site-status">{siteConfig.location}</p>
+          <PortfolioPicker className="site-command" label="Portfolios" />
           <button
             className="site-command"
             onClick={(event) => openPalette(event.clientX, event.clientY)}
@@ -245,6 +254,7 @@ export function SiteExperience() {
               ))}
             </div>
             <div className="palette-links">
+              <PortfolioSwitcher onSelect={() => setPaletteOpen(false)} variant="editorial" />
               {commands.map((command) => (
                 <a
                   className="palette-link"
