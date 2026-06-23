@@ -298,6 +298,10 @@ main {
     will-change: transform;
   }
 
+  .cursor-ring-elevated {
+    z-index: 100;
+  }
+
   @media (min-width: 1024px) {
     body,
     a,

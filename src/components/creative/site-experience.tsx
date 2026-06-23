@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { commands, navSections, siteConfig } from "@/lib/profile";
 
 export function SiteExperience() {
@@ -9,6 +9,7 @@ export function SiteExperience() {
   const [activeSection, setActiveSection] = useState(navSections[0].id);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
+  const cursorRef = useRef({ x: 0, y: 0 });
   const [scrollProgress, setScrollProgress] = useState(0);
   const [scrolled, setScrolled] = useState(false);
 
@@ -17,11 +18,26 @@ export function SiteExperience() {
     return () => window.clearTimeout(timer);
   }, []);
 
+  const syncCursor = (x: number, y: number) => {
+    cursorRef.current = { x, y };
+    setCursor({ x, y });
+  };
+
+  const openPalette = (x?: number, y?: number) => {
+    if (x !== undefined && y !== undefined) {
+      syncCursor(x, y);
+    } else {
+      setCursor(cursorRef.current);
+    }
+    setPaletteOpen(true);
+  };
+
   useEffect(() => {
+
     const controller = new AbortController();
 
     const onPointerMove = (event: PointerEvent) => {
-      setCursor({ x: event.clientX, y: event.clientY });
+      syncCursor(event.clientX, event.clientY);
     };
 
     const onScroll = () => {
@@ -34,7 +50,12 @@ export function SiteExperience() {
     const onKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        setPaletteOpen((open) => !open);
+        setPaletteOpen((open) => {
+          if (!open) {
+            setCursor(cursorRef.current);
+          }
+          return !open;
+        });
       }
 
       if (event.key === "Escape") {
@@ -126,7 +147,7 @@ export function SiteExperience() {
 
       <div
         aria-hidden="true"
-        className="cursor-ring hidden lg:block"
+        className={`cursor-ring hidden lg:block ${paletteOpen ? "cursor-ring-elevated" : ""}`}
         style={{ transform: `translate(${cursor.x}px, ${cursor.y}px)` }}
       />
 
@@ -145,7 +166,7 @@ export function SiteExperience() {
           <p className="site-status">{siteConfig.location}</p>
           <button
             className="site-command"
-            onClick={() => setPaletteOpen(true)}
+            onClick={(event) => openPalette(event.clientX, event.clientY)}
             type="button"
           >
             Connect
@@ -193,7 +214,12 @@ export function SiteExperience() {
       </nav>
 
       {paletteOpen ? (
-        <div aria-modal="true" className="palette-backdrop" role="dialog">
+        <div
+          aria-modal="true"
+          className="palette-backdrop"
+          onPointerMove={(event) => syncCursor(event.clientX, event.clientY)}
+          role="dialog"
+        >
           <div className="palette-panel">
             <div className="palette-head">
               <p className="section-kicker">Connect</p>
