@@ -11,9 +11,9 @@ import { InteractiveLayer } from "@/components/interactive-layer";
 
 export function NoirPortfolio() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#030712] text-white">
+    <div className="relative min-h-screen overflow-x-clip bg-[#030712] text-white">
       <InteractiveLayer />
-      <main className="relative z-10 pt-16">
+      <main className="noir-main relative z-10">
         <Hero />
         <SignalSection />
         <ExperienceSection />
@@ -33,7 +33,7 @@ function Hero() {
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.16),transparent_28rem),radial-gradient(circle_at_80%_10%,rgba(168,85,247,0.12),transparent_26rem),linear-gradient(135deg,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:auto,auto,72px_72px]" />
       <div className="mx-auto grid w-full max-w-7xl gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
         <div>
-          <p className="mb-6 inline-flex rounded-full border border-cyan-200/25 bg-cyan-200/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-100">
+          <p className="mb-6 inline-flex max-w-full flex-wrap justify-center rounded-full border border-cyan-200/25 bg-cyan-200/10 px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.28em] text-cyan-100 sm:justify-start">
             {siteConfig.location} / {siteConfig.role}
           </p>
           <h1 className="max-w-5xl text-balance text-6xl font-black leading-[0.9] tracking-[-0.08em] text-white sm:text-7xl lg:text-8xl">
