@@ -12,13 +12,14 @@ export const contentType = "image/png";
 
 export const alt = `${siteConfig.name} portfolio preview`;
 
-const accent = "#f59e0b";
-const accentSoft = "rgba(245, 158, 11, 0.35)";
+const paper = "#ece6da";
+const paperDeep = "#ddd4c4";
+const ink = "#111111";
+const muted = "#5f5950";
+const accent = "#d62828";
 
 export default async function OpenGraphImage() {
   const syne = await readFile(join(process.cwd(), "public/fonts/syne-800.woff"));
-
-  const titleName = `${siteConfig.displayName[1]} ${siteConfig.displayName[0]}`;
 
   return new ImageResponse(
     (
@@ -27,141 +28,146 @@ export default async function OpenGraphImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          position: "relative",
-          overflow: "hidden",
-          background: "#0b0b0b",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "56px 64px 52px",
+          background: `linear-gradient(145deg, ${paper} 0%, ${paperDeep} 100%)`,
+          color: ink,
           fontFamily: "Syne",
         }}
       >
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            width: "56%",
-            height: "100%",
-            padding: "56px 64px",
-            background:
-              "linear-gradient(160deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.015) 38%, rgba(0,0,0,0.2) 100%), #242424",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              gap: 18,
-              maxWidth: 580,
+              fontSize: 22,
+              fontWeight: 800,
+              letterSpacing: 6,
+              textTransform: "uppercase",
+              color: muted,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                color: "#ffffff",
-                fontSize: 46,
-                fontWeight: 800,
-                lineHeight: 1.12,
-                letterSpacing: -1.5,
-              }}
-            >
-              {`${titleName} | ${siteConfig.role}`}
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                alignSelf: "flex-start",
-                borderRadius: 999,
-                padding: "16px 34px",
-                background: accent,
-                color: "#111111",
-                fontSize: 28,
-                fontWeight: 800,
-                letterSpacing: 0.5,
-                boxShadow: `0 0 0 1px rgba(255,255,255,0.08), 0 10px 40px ${accentSoft}`,
-              }}
-            >
-              Read More
-            </div>
+            {siteConfig.name}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 22,
+              fontWeight: 800,
+              letterSpacing: 5,
+              textTransform: "uppercase",
+              color: muted,
+            }}
+          >
+            {siteConfig.role}
           </div>
         </div>
 
         <div
           style={{
-            position: "absolute",
-            top: -60,
-            left: "55.5%",
-            width: 18,
-            height: 820,
-            background: accent,
-            transform: "rotate(13deg)",
-            boxShadow: `0 0 30px ${accentSoft}`,
-          }}
-        />
-
-        <div
-          style={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
-            width: "44%",
-            height: "100%",
-            padding: "48px 52px 44px 72px",
-            background: "#0f0f0f",
+            gap: 0,
+            marginTop: -12,
           }}
         >
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              gap: 22,
-              overflow: "hidden",
+              fontSize: 132,
+              fontWeight: 800,
+              lineHeight: 0.84,
+              letterSpacing: -8,
+              textTransform: "uppercase",
+              color: ink,
             }}
           >
-            <div
-              style={{
-                fontSize: 118,
-                fontWeight: 800,
-                lineHeight: 0.88,
-                letterSpacing: -6,
-                color: "transparent",
-                WebkitTextStroke: "2px rgba(255,255,255,0.92)",
-                textTransform: "uppercase",
-              }}
-            >
-              {siteConfig.displayName[0]}
-            </div>
-            <div
-              style={{
-                fontSize: 30,
-                lineHeight: 1.35,
-                color: "rgba(255,255,255,0.78)",
-                maxWidth: 430,
-              }}
-            >
-              {siteConfig.headline}
-            </div>
+            {siteConfig.displayName[0]}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 132,
+              fontWeight: 800,
+              lineHeight: 0.84,
+              letterSpacing: -8,
+              textTransform: "uppercase",
+              color: "transparent",
+              WebkitTextStroke: `2px ${ink}`,
+            }}
+          >
+            {siteConfig.displayName[1]}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              width: 72,
+              height: 6,
+              marginTop: 28,
+              background: accent,
+            }}
+          />
+          <div
+            style={{
+              display: "flex",
+              marginTop: 24,
+              maxWidth: 920,
+              fontSize: 30,
+              lineHeight: 1.35,
+              color: muted,
+            }}
+          >
+            {siteConfig.headline}
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              gap: 14,
+              fontSize: 24,
+              fontWeight: 800,
+              color: ink,
+            }}
+          >
+            <span>React</span>
+            <span style={{ color: "rgba(17,17,17,0.28)" }}>/</span>
+            <span>Next.js</span>
+            <span style={{ color: "rgba(17,17,17,0.28)" }}>/</span>
+            <span>TypeScript</span>
+            <span style={{ color: "rgba(17,17,17,0.28)" }}>/</span>
+            <span>GraphQL</span>
           </div>
 
           <div
             style={{
               display: "flex",
-              flexWrap: "wrap",
-              gap: 8,
+              alignItems: "center",
+              gap: 12,
+              borderRadius: 999,
+              padding: "14px 28px",
+              background: ink,
+              color: paper,
               fontSize: 24,
               fontWeight: 800,
-              color: "rgba(255,255,255,0.9)",
-              letterSpacing: 0.5,
+              letterSpacing: 1,
+              textTransform: "uppercase",
             }}
           >
-            <span>React</span>
-            <span style={{ color: "rgba(255,255,255,0.28)" }}>/</span>
-            <span>Next.js</span>
-            <span style={{ color: "rgba(255,255,255,0.28)" }}>/</span>
-            <span>TypeScript</span>
-            <span style={{ color: "rgba(255,255,255,0.28)" }}>/</span>
-            <span>GraphQL</span>
-            <span style={{ color: "rgba(255,255,255,0.28)" }}>/</span>
-            <span>Deployment</span>
+            Open portfolio
           </div>
         </div>
       </div>
