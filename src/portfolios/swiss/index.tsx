@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { PortfolioPicker } from "@/components/portfolio-picker";
+import { useActiveSection } from "@/hooks/use-active-section";
+import { useDismissiblePanel } from "@/hooks/use-dismissible-panel";
 import {
   expertise,
   metrics,
@@ -18,46 +19,125 @@ const sections = [
   { id: "contact", number: "05", label: "Contact" },
 ];
 
+const sectionIds = sections.map((section) => section.id);
+
+function SwissIndexLink({
+  active,
+  onNavigate,
+  section,
+}: {
+  active: string;
+  onNavigate?: () => void;
+  section: (typeof sections)[number];
+}) {
+  return (
+    <a
+      className={active === section.id ? "swiss-index-link-active" : ""}
+      href={`#${section.id}`}
+      onClick={onNavigate}
+    >
+      <span>{section.number}</span>
+      <span>{section.label}</span>
+    </a>
+  );
+}
+
 export function SwissPortfolio() {
-  const [active, setActive] = useState("intro");
+  const active = useActiveSection(sectionIds);
+  const { close, open, openPanel, ref } = useDismissiblePanel();
 
-  useEffect(() => {
-    const observers = sections
-      .map((section) => document.getElementById(section.id))
-      .filter((section): section is HTMLElement => Boolean(section))
-      .map((section) => {
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              setActive(section.id);
-            }
-          },
-          { rootMargin: "-40% 0px -45% 0px", threshold: 0.01 },
-        );
-        observer.observe(section);
-        return observer;
-      });
+  const activeSection = sections.find((section) => section.id === active) ?? sections[0];
+  const activeIndex = sections.findIndex((section) => section.id === activeSection.id);
 
-    return () => observers.forEach((observer) => observer.disconnect());
-  }, []);
+  const toggleLabel = (
+    <>
+      <span className="swiss-index-current-number">{activeSection.number}</span>
+      <span className="swiss-index-current-label">{activeSection.label}</span>
+      <span aria-hidden="true" className="swiss-index-current-arrow">
+        ↓
+      </span>
+    </>
+  );
 
   return (
     <div className="swiss-portfolio">
-      <aside className="swiss-index">
+      <aside
+        className={`swiss-index${open ? " swiss-index-expanded" : ""}`}
+        ref={ref}
+      >
         <p className="swiss-brand">MP</p>
-        <nav>
+
+        <nav aria-label="Section navigation" className="swiss-index-nav">
           {sections.map((section) => (
-            <a
-              className={active === section.id ? "swiss-index-link-active" : ""}
-              href={`#${section.id}`}
-              key={section.id}
-            >
-              <span>{section.number}</span>
-              <span>{section.label}</span>
-            </a>
+            <SwissIndexLink active={active} key={section.id} section={section} />
           ))}
         </nav>
-        <PortfolioPicker className="swiss-picker-trigger" label="Layouts" />
+
+        <div className="swiss-index-mobile">
+          {open ? (
+            <button
+              aria-controls="swiss-section-nav"
+              aria-expanded="true"
+              aria-live="polite"
+              className="swiss-index-current swiss-index-current-open"
+              onClick={close}
+              type="button"
+            >
+              {toggleLabel}
+            </button>
+          ) : (
+            <button
+              aria-controls="swiss-section-nav"
+              aria-expanded="false"
+              aria-live="polite"
+              className="swiss-index-current"
+              onClick={openPanel}
+              type="button"
+            >
+              {toggleLabel}
+            </button>
+          )}
+
+          <div
+            aria-label="Section progress"
+            className="swiss-index-progress"
+            role="group"
+          >
+            {sections.map((section, index) => (
+              <a
+                aria-current={active === section.id ? "step" : undefined}
+                aria-label={section.label}
+                className={`swiss-index-progress-segment${
+                  index <= activeIndex ? " swiss-index-progress-segment-done" : ""
+                }${active === section.id ? " swiss-index-progress-segment-active" : ""}`}
+                href={`#${section.id}`}
+                key={section.id}
+                onClick={close}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div
+          className={`swiss-index-unfold${open ? " swiss-index-unfold-open" : ""}`}
+          hidden={!open}
+          id="swiss-section-nav"
+        >
+          {open ? (
+            <nav aria-label="Jump to section" className="swiss-index-mobile-nav">
+              {sections.map((section) => (
+                <SwissIndexLink
+                  active={active}
+                  key={section.id}
+                  onNavigate={close}
+                  section={section}
+                />
+              ))}
+            </nav>
+          ) : null}
+        </div>
+
+        <PortfolioPicker className="swiss-picker-trigger" label="Layouts" showMeta={false} />
       </aside>
 
       <main className="swiss-main">
