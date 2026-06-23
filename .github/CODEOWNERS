@@ -1,0 +1,10 @@
+# Default review ownership for the repository.
+* @manikanta9176
+
+# GitHub automation and repository policy.
+/.github/ @manikanta9176
+
+# App entry points, routing, and shared site config.
+/src/app/ @manikanta9176
+/src/lib/profile.ts @manikanta9176
+/src/portfolios/ @manikanta9176
