@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: `${siteConfig.name} | Senior Full Stack Developer`,
-    description: siteConfig.description,
+    description: siteConfig.headline,
     url: siteConfig.url,
     siteName: `${siteConfig.name} Portfolio`,
     locale: "en_IN",
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: `${siteConfig.name} | Senior Full Stack Developer`,
-    description: siteConfig.description,
+    description: siteConfig.headline,
     images: ["/opengraph-image"],
   },
   alternates: {

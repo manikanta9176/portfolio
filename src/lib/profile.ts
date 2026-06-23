@@ -11,7 +11,7 @@ export const siteConfig = {
   headline:
     "Full-stack product engineer building fast interfaces, reliable backends, and deployment-ready systems.",
   description:
-    "Portfolio of Manikanta Potnuru, a senior full-stack developer focused on React, Next.js, TypeScript, backend services, CMS platforms, and modern deployment workflows.",
+    "Manikanta Potnuru portfolio. Senior full-stack developer building React, Next.js, TypeScript apps, GraphQL APIs, and deployment-ready systems.",
 };
 
 export function formatTimelineOrganization(item: {

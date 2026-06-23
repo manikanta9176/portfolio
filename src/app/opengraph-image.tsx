@@ -8,7 +8,12 @@ export const size = {
 
 export const contentType = "image/png";
 
+const accent = "#f5a623";
+const accentGlow = "rgba(245, 166, 35, 0.55)";
+
 export default function OpenGraphImage() {
+  const titleName = `${siteConfig.displayName[1]} ${siteConfig.displayName[0]}`;
+
   return new ImageResponse(
     (
       <div
@@ -16,73 +21,127 @@ export default function OpenGraphImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: 72,
-          color: "#111111",
-          background: "#ece6da",
-          fontFamily: "Arial",
+          position: "relative",
+          overflow: "hidden",
+          background: "#121212",
+          fontFamily: "Arial, Helvetica, sans-serif",
         }}
       >
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
-            fontSize: 24,
-            letterSpacing: 8,
-            textTransform: "uppercase",
-            color: "#5f5950",
+            flexDirection: "column",
+            justifyContent: "center",
+            width: "58%",
+            height: "100%",
+            padding: "64px 72px",
+            background:
+              "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 42%, rgba(0,0,0,0.15) 100%), #2a2a2a",
           }}
         >
-          <span>{siteConfig.name}</span>
-          <span>{siteConfig.role}</span>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
           <div
             style={{
-              fontSize: 118,
-              fontWeight: 900,
-              letterSpacing: -8,
-              lineHeight: 0.82,
-              textTransform: "uppercase",
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              maxWidth: 620,
+              color: "#ffffff",
+              fontSize: 52,
+              fontWeight: 800,
+              lineHeight: 1.08,
+              letterSpacing: -1,
             }}
           >
-            {siteConfig.displayName[0]}
+            <span>{titleName} |</span>
+            <span>{siteConfig.role}</span>
           </div>
+
           <div
             style={{
-              fontSize: 118,
-              fontWeight: 900,
-              letterSpacing: -8,
-              lineHeight: 0.82,
-              textTransform: "uppercase",
-              color: "transparent",
-              WebkitTextStroke: "2px #111111",
+              display: "flex",
+              marginTop: 48,
+              borderRadius: 999,
+              padding: "22px 42px",
+              background: accent,
+              color: "#151515",
+              fontSize: 34,
+              fontWeight: 800,
+              letterSpacing: 1,
+              boxShadow: `0 0 28px ${accentGlow}, 0 0 56px rgba(245, 166, 35, 0.28)`,
             }}
           >
-            {siteConfig.displayName[1]}
-          </div>
-          <div
-            style={{
-              marginTop: 28,
-              fontSize: 30,
-              color: "#5f5950",
-              lineHeight: 1.35,
-              maxWidth: 900,
-            }}
-          >
-            Full-stack product engineer building fast interfaces, reliable
-            backends, and deployment-ready systems.
+            Read More
           </div>
         </div>
-        <div style={{ display: "flex", gap: 18, fontSize: 22, color: "#111111" }}>
-          <span>React</span>
-          <span>/</span>
-          <span>Next.js</span>
-          <span>/</span>
-          <span>TypeScript</span>
-          <span>/</span>
-          <span>GraphQL</span>
+
+        <div
+          style={{
+            position: "absolute",
+            top: -80,
+            left: "54%",
+            width: 28,
+            height: 900,
+            background: accent,
+            transform: "rotate(14deg)",
+            boxShadow: `0 0 24px ${accentGlow}`,
+          }}
+        />
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            width: "42%",
+            height: "100%",
+            padding: "56px 48px 52px 64px",
+            background: "#101010",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div
+              style={{
+                fontSize: 92,
+                fontWeight: 800,
+                lineHeight: 0.95,
+                letterSpacing: -4,
+                color: "#f3f3f3",
+              }}
+            >
+              {siteConfig.displayName[0]}
+            </div>
+            <div
+              style={{
+                fontSize: 34,
+                lineHeight: 1.35,
+                color: "rgba(255,255,255,0.72)",
+                maxWidth: 420,
+              }}
+            >
+              {siteConfig.headline}
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 10,
+              fontSize: 28,
+              fontWeight: 700,
+              color: "rgba(255,255,255,0.88)",
+            }}
+          >
+            <span>React</span>
+            <span style={{ color: "rgba(255,255,255,0.35)" }}>/</span>
+            <span>Next.js</span>
+            <span style={{ color: "rgba(255,255,255,0.35)" }}>/</span>
+            <span>TypeScript</span>
+            <span style={{ color: "rgba(255,255,255,0.35)" }}>/</span>
+            <span>GraphQL</span>
+            <span style={{ color: "rgba(255,255,255,0.35)" }}>/</span>
+            <span>Deployment</span>
+          </div>
         </div>
       </div>
     ),
