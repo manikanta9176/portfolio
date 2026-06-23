@@ -1,4 +1,7 @@
+"use client";
+
 import { PortfolioPicker } from "@/components/portfolio-picker";
+import { useActiveSection } from "@/hooks/use-active-section";
 import {
   expertise,
   metrics,
@@ -7,7 +10,21 @@ import {
   timeline,
 } from "@/lib/profile";
 
+const sections = [
+  { id: "intro", label: "Profile", short: "In" },
+  { id: "craft", label: "Craft", short: "Cr" },
+  { id: "journey", label: "Journey", short: "Jr" },
+  { id: "work", label: "Work", short: "Wk" },
+  { id: "contact", label: "Contact", short: "Ct" },
+] as const;
+
+const sectionIds = sections.map((section) => section.id);
+
 export function BentoPortfolio() {
+  const active = useActiveSection(sectionIds);
+  const activeSection = sections.find((section) => section.id === active) ?? sections[0];
+  const activeIndex = sections.findIndex((section) => section.id === activeSection.id);
+
   return (
     <div className="bento-portfolio">
       <header className="bento-topbar">
@@ -20,6 +37,28 @@ export function BentoPortfolio() {
           <PortfolioPicker className="bento-picker-trigger" label="Layouts" showMeta={false} />
         </div>
       </header>
+
+      <nav aria-label="Mobile section navigation" className="bento-dock">
+        <p aria-live="polite" className="bento-dock-current">
+          <span>{String(activeIndex + 1).padStart(2, "0")}</span>
+          <span>{activeSection.label}</span>
+        </p>
+        <div className="bento-dock-tiles" role="group" aria-label="Jump to section">
+          {sections.map((section, index) => (
+            <a
+              aria-current={active === section.id ? "step" : undefined}
+              aria-label={section.label}
+              className={`bento-dock-tile${
+                active === section.id ? " bento-dock-tile-active" : ""
+              }${index < activeIndex ? " bento-dock-tile-done" : ""}`}
+              href={`#${section.id}`}
+              key={section.id}
+            >
+              <span>{section.short}</span>
+            </a>
+          ))}
+        </div>
+      </nav>
 
       <main className="bento-grid">
         <section className="bento-tile bento-hero" id="intro">
