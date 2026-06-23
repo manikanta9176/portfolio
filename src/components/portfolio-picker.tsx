@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { PortfolioSwitcher } from "@/components/portfolio-switcher";
 import { usePortfolio } from "@/portfolios/provider";
+import { dispatchSiteCursorSync } from "@/lib/site-cursor";
 
 interface PortfolioPickerProps {
   className?: string;
@@ -32,10 +33,12 @@ export function PortfolioPicker({
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    document.body.classList.add("overlay-open");
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      document.body.classList.remove("overlay-open");
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [open]);
@@ -76,6 +79,9 @@ export function PortfolioPicker({
         aria-modal="true"
         className={`portfolio-picker-backdrop portfolio-picker-backdrop-${portfolioId}`}
         onClick={() => setOpen(false)}
+        onPointerMove={(event) =>
+          dispatchSiteCursorSync(event.clientX, event.clientY)
+        }
         role="dialog"
       >
         <div
@@ -104,7 +110,10 @@ export function PortfolioPicker({
     <>
       <button
         className={`portfolio-picker-trigger portfolio-picker-trigger-${portfolioId} ${className}`.trim()}
-        onClick={() => setOpen(true)}
+        onClick={(event) => {
+          dispatchSiteCursorSync(event.clientX, event.clientY);
+          setOpen(true);
+        }}
         type="button"
       >
         <span className="portfolio-picker-trigger-label">{label}</span>

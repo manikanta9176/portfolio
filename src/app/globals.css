@@ -298,8 +298,9 @@ main {
     will-change: transform;
   }
 
-  .cursor-ring-elevated {
-    z-index: 100;
+  .cursor-ring-elevated,
+  body.overlay-open .cursor-ring {
+    z-index: 150;
   }
 
   @media (min-width: 1024px) {
@@ -386,6 +387,36 @@ main {
     letter-spacing: 0.12em;
     text-transform: uppercase;
     white-space: nowrap;
+  }
+
+  @media (max-width: 767px) {
+    .site-header {
+      gap: 0.5rem;
+      padding-inline: 0.85rem;
+    }
+
+    .header-chapter {
+      display: none;
+    }
+
+    .site-header-end {
+      gap: 0.45rem;
+    }
+
+    .site-header-end .portfolio-picker-trigger-meta {
+      display: none;
+    }
+
+    .site-command {
+      padding: 0.5rem 0.7rem;
+      font-size: 0.82rem;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .site-header-end .portfolio-picker-trigger-meta {
+      display: none;
+    }
   }
 
   .header-chapter-number {

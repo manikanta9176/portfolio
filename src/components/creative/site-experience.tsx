@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { PortfolioPicker } from "@/components/portfolio-picker";
 import { PortfolioSwitcher } from "@/components/portfolio-switcher";
 import { commands, navSections, siteConfig } from "@/lib/profile";
+import { SITE_CURSOR_SYNC } from "@/lib/site-cursor";
 
 export function SiteExperience() {
   const [ready, setReady] = useState(false);
@@ -42,6 +43,11 @@ export function SiteExperience() {
       syncCursor(event.clientX, event.clientY);
     };
 
+    const onCursorSync = (event: Event) => {
+      const { x, y } = (event as CustomEvent<{ x: number; y: number }>).detail;
+      syncCursor(x, y);
+    };
+
     const onScroll = () => {
       const max =
         document.documentElement.scrollHeight - window.innerHeight || 1;
@@ -67,6 +73,9 @@ export function SiteExperience() {
 
     window.addEventListener("pointermove", onPointerMove, {
       passive: true,
+      signal: controller.signal,
+    });
+    window.addEventListener(SITE_CURSOR_SYNC, onCursorSync, {
       signal: controller.signal,
     });
     window.addEventListener("scroll", onScroll, {
@@ -172,7 +181,7 @@ export function SiteExperience() {
 
         <div className="site-header-end">
           <p className="site-status">{siteConfig.location}</p>
-          <PortfolioPicker className="site-command" label="Portfolios" />
+          <PortfolioPicker className="site-command" label="Portfolios" showMeta={false} />
           <button
             className="site-command"
             onClick={(event) => openPalette(event.clientX, event.clientY)}
