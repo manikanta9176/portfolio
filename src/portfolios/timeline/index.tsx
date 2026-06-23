@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { PortfolioPicker } from "@/components/portfolio-picker";
+import { useActiveSection } from "@/hooks/use-active-section";
+import { useDismissiblePanel } from "@/hooks/use-dismissible-panel";
 import {
   expertise,
   metrics,
@@ -16,44 +17,129 @@ const stops = [
   { id: "journey", label: "Journey" },
   { id: "work", label: "Work" },
   { id: "contact", label: "Contact" },
-];
+] as const;
+
+const sectionIds = stops.map((stop) => stop.id);
+
+function TimelineStopLink({
+  active,
+  index,
+  onNavigate,
+  stop,
+}: {
+  active: string;
+  index: number;
+  onNavigate?: () => void;
+  stop: (typeof stops)[number];
+}) {
+  return (
+    <a
+      className={active === stop.id ? "timeline-node-active" : ""}
+      href={`#${stop.id}`}
+      onClick={onNavigate}
+    >
+      <span>{String(index + 1).padStart(2, "0")}</span>
+      <span>{stop.label}</span>
+    </a>
+  );
+}
 
 export function TimelinePortfolio() {
-  const [active, setActive] = useState("intro");
+  const active = useActiveSection(sectionIds, "-42% 0px -45% 0px");
+  const { close, open, openPanel, ref } = useDismissiblePanel();
 
-  useEffect(() => {
-    const observers = stops
-      .map((stop) => document.getElementById(stop.id))
-      .filter((section): section is HTMLElement => Boolean(section))
-      .map((section) => {
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              setActive(section.id);
-            }
-          },
-          { rootMargin: "-42% 0px -45% 0px", threshold: 0.01 },
-        );
-        observer.observe(section);
-        return observer;
-      });
+  const activeStop = stops.find((stop) => stop.id === active) ?? stops[0];
+  const activeIndex = stops.findIndex((stop) => stop.id === activeStop.id);
 
-    return () => observers.forEach((observer) => observer.disconnect());
-  }, []);
+  const railToggleLabel = (
+    <>
+      <span className="timeline-rail-current-index">
+        {String(activeIndex + 1).padStart(2, "0")}
+      </span>
+      <span className="timeline-rail-current-label">{activeStop.label}</span>
+      <span aria-hidden="true" className="timeline-rail-current-arrow">
+        ↓
+      </span>
+    </>
+  );
 
   return (
     <div className="timeline-portfolio">
-      <aside className="timeline-rail">
-        {stops.map((stop, index) => (
-          <a
-            className={active === stop.id ? "timeline-node-active" : ""}
-            href={`#${stop.id}`}
-            key={stop.id}
+      <aside
+        className={`timeline-rail${open ? " timeline-rail-expanded" : ""}`}
+        ref={ref}
+      >
+        <nav aria-label="Section navigation" className="timeline-rail-nav">
+          {stops.map((stop, index) => (
+            <TimelineStopLink active={active} index={index} key={stop.id} stop={stop} />
+          ))}
+        </nav>
+
+        <div className="timeline-rail-mobile">
+          {open ? (
+            <button
+              aria-controls="timeline-section-nav"
+              aria-expanded="true"
+              aria-live="polite"
+              className="timeline-rail-current timeline-rail-current-open"
+              onClick={close}
+              type="button"
+            >
+              {railToggleLabel}
+            </button>
+          ) : (
+            <button
+              aria-controls="timeline-section-nav"
+              aria-expanded="false"
+              aria-live="polite"
+              className="timeline-rail-current"
+              onClick={openPanel}
+              type="button"
+            >
+              {railToggleLabel}
+            </button>
+          )}
+
+          <div
+            aria-label="Section progress"
+            className="timeline-rail-progress"
+            role="group"
           >
-            <span>{String(index + 1).padStart(2, "0")}</span>
-            <span>{stop.label}</span>
-          </a>
-        ))}
+            {stops.map((stop, index) => (
+              <a
+                aria-current={active === stop.id ? "step" : undefined}
+                aria-label={stop.label}
+                className={`timeline-rail-progress-segment${
+                  index <= activeIndex ? " timeline-rail-progress-segment-done" : ""
+                }${active === stop.id ? " timeline-rail-progress-segment-active" : ""}`}
+                href={`#${stop.id}`}
+                key={stop.id}
+                onClick={close}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div
+          className={`timeline-rail-unfold${open ? " timeline-rail-unfold-open" : ""}`}
+          hidden={!open}
+          id="timeline-section-nav"
+        >
+          {open ? (
+            <nav aria-label="Jump to section" className="timeline-rail-mobile-nav">
+              {stops.map((stop, index) => (
+                <TimelineStopLink
+                  active={active}
+                  index={index}
+                  key={stop.id}
+                  onNavigate={close}
+                  stop={stop}
+                />
+              ))}
+            </nav>
+          ) : null}
+        </div>
+
         <PortfolioPicker className="timeline-picker-trigger" label="Switch" showMeta={false} />
       </aside>
 
