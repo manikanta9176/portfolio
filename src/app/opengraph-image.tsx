@@ -47,7 +47,7 @@ export default function OpenGraphImage() {
               textTransform: "uppercase",
             }}
           >
-            Potnuru
+            {siteConfig.displayName[0]}
           </div>
           <div
             style={{
@@ -60,7 +60,7 @@ export default function OpenGraphImage() {
               WebkitTextStroke: "2px #111111",
             }}
           >
-            Manikanta
+            {siteConfig.displayName[1]}
           </div>
           <div
             style={{

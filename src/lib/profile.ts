@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: "Potnuru Manikanta",
-  displayName: ["Potnuru", "Manikanta"],
+  name: "Manikanta Potnuru",
+  displayName: ["Manikanta", "Potnuru"],
   role: "Senior Full Stack Developer",
   url: "https://manikanta.net",
   location: "Hyderabad, India",
@@ -12,7 +12,7 @@ export const siteConfig = {
   headline:
     "Full-stack product engineer building fast interfaces, reliable backends, and deployment-ready systems.",
   description:
-    "Portfolio of Potnuru Manikanta, a senior full-stack developer focused on React, Next.js, TypeScript, backend services, CMS platforms, and modern deployment workflows.",
+    "Portfolio of Manikanta Potnuru, a senior full-stack developer focused on React, Next.js, TypeScript, backend services, CMS platforms, and modern deployment workflows.",
 };
 
 export const navSections = [

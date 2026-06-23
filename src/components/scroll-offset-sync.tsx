@@ -1,24 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
+import { computeSectionScrollTop } from "@/lib/section-scroll";
 import { usePortfolio } from "@/portfolios/provider";
 import type { PortfolioId } from "@/portfolios/types";
 
 const SCROLL_GAP = "0.85rem";
 const BIND_RETRIES_MS = [0, 50, 150, 300, 600];
-
-const SECTION_TITLE_SELECTOR = [
-  ":scope > .terminal-prompt",
-  ":scope .section-kicker",
-  ":scope > .timeline-kicker",
-  ":scope > .brutalist-kicker",
-  ":scope > .swiss-kicker",
-  ":scope > .bento-kicker",
-  ":scope .display-title",
-  ":scope > p:first-of-type",
-  ":scope h1",
-  ":scope h2",
-].join(", ");
 
 function resolveChrome(portfolioId: PortfolioId): HTMLElement | null {
   const mobileSideRail = window.matchMedia("(max-width: 959px)").matches;
@@ -79,27 +67,27 @@ function isSectionAnchor(element: HTMLElement | null): element is HTMLElement {
   return Boolean(element?.matches("section[id], header[id]"));
 }
 
-function resolveScrollTarget(section: HTMLElement): HTMLElement {
-  return section.querySelector<HTMLElement>(SECTION_TITLE_SELECTOR) ?? section;
+function getSectionScrollTop(id: string, portfolioId: PortfolioId): number | null {
+  const section = document.getElementById(id);
+  if (!isSectionAnchor(section)) {
+    return null;
+  }
+
+  const chromeHeight = measureChromeHeight(portfolioId);
+  const gap = chromeHeight > 0 ? readScrollGapPx() : 0;
+
+  return computeSectionScrollTop(section, chromeHeight, gap);
 }
 
 function scrollToSection(
   id: string,
   portfolioId: PortfolioId,
   behavior: ScrollBehavior = "smooth",
-) {
-  const section = document.getElementById(id);
-  if (!isSectionAnchor(section)) {
+): boolean {
+  const top = getSectionScrollTop(id, portfolioId);
+  if (top === null) {
     return false;
   }
-
-  const target = resolveScrollTarget(section);
-  const chromeHeight = measureChromeHeight(portfolioId);
-  const gap = chromeHeight > 0 ? readScrollGapPx() : 0;
-  const top = Math.max(
-    0,
-    target.getBoundingClientRect().top + window.scrollY - chromeHeight - gap,
-  );
 
   window.scrollTo({ top, behavior });
   return true;
@@ -111,6 +99,14 @@ export function ScrollOffsetSync() {
   useEffect(() => {
     if (!ready) {
       return;
+    }
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    if (window.location.hash) {
+      window.scrollTo(0, 0);
     }
 
     let observer: ResizeObserver | null = null;
@@ -138,6 +134,16 @@ export function ScrollOffsetSync() {
       observer.observe(chrome);
     };
 
+    const scrollToHash = (behavior: ScrollBehavior = "auto") => {
+      const hash = window.location.hash;
+      if (!hash || hash === "#") {
+        return;
+      }
+
+      const id = decodeURIComponent(hash.slice(1));
+      scrollToSection(id, portfolioId, behavior);
+    };
+
     const onAnchorClick = (event: Event) => {
       const link = (event.target as Element | null)?.closest('a[href^="#"]');
       if (!(link instanceof HTMLAnchorElement)) {
@@ -156,31 +162,21 @@ export function ScrollOffsetSync() {
 
       event.preventDefault();
       window.history.pushState(null, "", hash);
-      scrollToSection(id, portfolioId);
+      scrollToSection(id, portfolioId, "smooth");
     };
 
     const onHashChange = () => {
-      const id = decodeURIComponent(window.location.hash.slice(1));
-      if (!id) {
-        return;
-      }
-
-      scrollToSection(id, portfolioId, "smooth");
+      scrollToHash("smooth");
     };
 
     bind();
     for (const delay of BIND_RETRIES_MS) {
-      retryTimers.push(window.setTimeout(bind, delay));
-    }
-
-    if (window.location.hash) {
-      const scrollToHash = () => {
-        const id = decodeURIComponent(window.location.hash.slice(1));
-        scrollToSection(id, portfolioId, "auto");
-      };
-
-      retryTimers.push(window.setTimeout(scrollToHash, 0));
-      retryTimers.push(window.setTimeout(scrollToHash, 150));
+      retryTimers.push(
+        window.setTimeout(() => {
+          bind();
+          scrollToHash("auto");
+        }, delay),
+      );
     }
 
     const media = window.matchMedia("(max-width: 959px)");
@@ -199,6 +195,9 @@ export function ScrollOffsetSync() {
       document.removeEventListener("click", onAnchorClick, true);
       window.removeEventListener("hashchange", onHashChange);
       observer?.disconnect();
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "auto";
+      }
       document.documentElement.style.setProperty("--chrome-height", "0px");
       document.documentElement.style.setProperty("--scroll-gap", "0px");
     };

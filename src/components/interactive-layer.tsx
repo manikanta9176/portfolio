@@ -131,21 +131,20 @@ export function InteractiveLayer() {
         }}
       />
 
-      <nav
-        aria-label="Section navigation"
-        className="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 rounded-full border border-white/10 bg-white/[0.03] p-2 shadow-2xl shadow-black/30 backdrop-blur-xl lg:block"
-      >
+      <nav aria-label="Section navigation" className="noir-desktop-rail">
         {sections.map((section, index) => (
           <a
+            aria-current={index === activeIndex ? "location" : undefined}
             aria-label={`Jump to ${section.label}`}
-            className={`block h-3 w-3 rounded-full transition ${
-              index === activeIndex
-                ? "my-4 bg-cyan-200 shadow-[0_0_24px_rgba(125,211,252,0.9)]"
-                : "my-3 bg-white/25 hover:bg-white/60"
+            className={`noir-rail-stop${
+              index === activeIndex ? " noir-rail-stop-active" : ""
             }`}
             href={`#${section.id}`}
             key={section.id}
-          />
+          >
+            <span className="noir-rail-stop-label">{section.label}</span>
+            <span aria-hidden="true" className="noir-rail-stop-dot" />
+          </a>
         ))}
       </nav>
 
