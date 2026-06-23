@@ -1,6 +1,7 @@
 "use client";
 
 import { PortfolioPicker } from "@/components/portfolio-picker";
+import { useActiveSection } from "@/hooks/use-active-section";
 import {
   commands,
   expertise,
@@ -10,18 +11,52 @@ import {
   timeline,
 } from "@/lib/profile";
 
+const sections = [
+  { id: "intro", label: "whoami" },
+  { id: "craft", label: "capabilities" },
+  { id: "journey", label: "experience.log" },
+  { id: "work", label: "projects" },
+  { id: "contact", label: "contact.env" },
+] as const;
+
+const sectionIds = sections.map((section) => section.id);
+
 export function TerminalPortfolio() {
+  const active = useActiveSection(sectionIds, "-42% 0px -45% 0px");
+  const activeSection = sections.find((section) => section.id === active) ?? sections[0];
+
   return (
     <div className="terminal-portfolio">
-      <header className="terminal-titlebar">
-        <div className="terminal-dots">
-          <span />
-          <span />
-          <span />
-        </div>
-        <p>manikanta@portfolio — bash — 80×24</p>
-        <PortfolioPicker className="terminal-picker-trigger" label="layouts" showMeta={false} />
-      </header>
+      <div className="terminal-chrome">
+        <header className="terminal-titlebar">
+          <div className="terminal-dots">
+            <span />
+            <span />
+            <span />
+          </div>
+          <p>manikanta@portfolio — bash — 80×24</p>
+          <PortfolioPicker className="terminal-picker-trigger" label="layouts" showMeta={false} />
+        </header>
+
+        <nav aria-label="Section navigation" className="terminal-tabs">
+          {sections.map((section) => (
+            <a
+              aria-current={active === section.id ? "page" : undefined}
+              className={active === section.id ? "terminal-tab-active" : ""}
+              href={`#${section.id}`}
+              key={section.id}
+            >
+              <span className="terminal-tab-prompt">$</span>
+              <span>cd {section.label}</span>
+            </a>
+          ))}
+        </nav>
+
+        <p aria-live="polite" className="terminal-session-line">
+          <span className="terminal-session-prompt">$</span> pwd{" "}
+          <span className="terminal-session-path">~/{activeSection.label}</span>
+        </p>
+      </div>
 
       <main className="terminal-body">
         <section className="terminal-block" id="intro">
