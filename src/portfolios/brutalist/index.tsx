@@ -5,6 +5,7 @@ import { useActiveSection } from "@/hooks/use-active-section";
 import { useDismissiblePanel } from "@/hooks/use-dismissible-panel";
 import {
   expertise,
+  formatTimelineOrganization,
   metrics,
   principles,
   projects,
@@ -203,7 +204,7 @@ export function BrutalistPortfolio() {
             <p>{item.period}</p>
             <div>
               <h3>{item.title}</h3>
-              <p>{item.organization}</p>
+              <p>{formatTimelineOrganization(item)}</p>
               <p>{item.copy}</p>
             </div>
           </article>

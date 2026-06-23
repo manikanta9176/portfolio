@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, IBM_Plex_Mono, JetBrains_Mono, Syne } from "next/font/google";
 import { PortfolioProvider } from "@/portfolios/provider";
 import { PORTFOLIO_STORAGE_KEY, portfolioIds } from "@/portfolios/registry";
-import { siteConfig } from "@/lib/profile";
+import { siteConfig, timeline } from "@/lib/profile";
 import "./globals.css";
 import "./site-cursor.css";
 import "./portfolios.css";
@@ -93,10 +93,14 @@ export default function RootLayout({
     jobTitle: siteConfig.role,
     url: siteConfig.url,
     email: siteConfig.email,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Hyderabad",
-      addressCountry: "IN",
+    workLocation: {
+      "@type": "Place",
+      name: timeline[0]?.organization ?? "Current office",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: timeline[0]?.location ?? "Hyderabad",
+        addressCountry: "IN",
+      },
     },
     sameAs: [siteConfig.github, siteConfig.linkedin, siteConfig.bioProfile],
     knowsAbout: [

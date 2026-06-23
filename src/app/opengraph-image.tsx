@@ -34,7 +34,7 @@ export default function OpenGraphImage() {
             color: "#5f5950",
           }}
         >
-          <span>{siteConfig.location}</span>
+          <span>{siteConfig.name}</span>
           <span>{siteConfig.role}</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>

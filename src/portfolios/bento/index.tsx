@@ -4,6 +4,7 @@ import { PortfolioPicker } from "@/components/portfolio-picker";
 import { useActiveSection } from "@/hooks/use-active-section";
 import {
   expertise,
+  formatTimelineOrganization,
   metrics,
   projects,
   siteConfig,
@@ -33,7 +34,6 @@ export function BentoPortfolio() {
           <h1>{siteConfig.name}</h1>
         </div>
         <div className="bento-topbar-actions">
-          <p>{siteConfig.location}</p>
           <PortfolioPicker className="bento-picker-trigger" label="Layouts" showMeta={false} />
         </div>
       </header>
@@ -92,7 +92,7 @@ export function BentoPortfolio() {
             <article key={item.title}>
               <span>{item.period}</span>
               <h3>{item.title}</h3>
-              <p>{item.organization}</p>
+              <p>{formatTimelineOrganization(item)}</p>
             </article>
           ))}
         </section>

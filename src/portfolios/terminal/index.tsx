@@ -4,6 +4,7 @@ import { PortfolioPicker } from "@/components/portfolio-picker";
 import { useActiveSection } from "@/hooks/use-active-section";
 import {
   commands,
+  formatTimelineOrganization,
   expertise,
   metrics,
   projects,
@@ -62,7 +63,7 @@ export function TerminalPortfolio() {
         <section className="terminal-block" id="intro">
           <p className="terminal-prompt">$ whoami</p>
           <h1>{siteConfig.name}</h1>
-          <p className="terminal-muted">{siteConfig.role} · {siteConfig.location}</p>
+          <p className="terminal-muted">{siteConfig.role}</p>
           <p className="terminal-output">{siteConfig.headline}</p>
           <p className="terminal-output">
             Full-stack product engineer building interfaces, APIs, and deployment-ready
@@ -88,7 +89,7 @@ export function TerminalPortfolio() {
           {timeline.map((item) => (
             <article className="terminal-log" key={item.title}>
               <p className="terminal-log-meta">
-                [{item.period}] {item.organization}
+                [{item.period}] {formatTimelineOrganization(item)}
               </p>
               <h2>{item.title}</h2>
               <p>{item.copy}</p>

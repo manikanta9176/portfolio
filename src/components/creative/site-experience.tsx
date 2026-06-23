@@ -118,7 +118,6 @@ export function SiteExperience() {
         </div>
 
         <div className="site-header-end">
-          <p className="site-status">{siteConfig.location}</p>
           <PortfolioPicker className="site-command" label="Portfolios" showMeta={false} />
           <button
             className="site-command"

@@ -6,6 +6,7 @@ import {
   metrics,
   principles,
   projects,
+  formatTimelineOrganization,
   siteConfig,
   timeline,
 } from "@/lib/profile";
@@ -98,7 +99,7 @@ export function EditorialPortfolio() {
                 <p className="journey-period">{item.period}</p>
                 <div>
                   <h3 className="journey-title">{item.title}</h3>
-                  <p className="journey-org">{item.organization}</p>
+                  <p className="journey-org">{formatTimelineOrganization(item)}</p>
                 </div>
                 <div>
                   <p className="journey-copy">{item.copy}</p>

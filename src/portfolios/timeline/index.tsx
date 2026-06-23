@@ -5,6 +5,7 @@ import { useActiveSection } from "@/hooks/use-active-section";
 import { useDismissiblePanel } from "@/hooks/use-dismissible-panel";
 import {
   expertise,
+  formatTimelineOrganization,
   metrics,
   projects,
   siteConfig,
@@ -199,7 +200,7 @@ export function TimelinePortfolio() {
             <article className="timeline-card" key={item.title}>
               <p>{item.period}</p>
               <h3>{item.title}</h3>
-              <p>{item.organization}</p>
+              <p>{formatTimelineOrganization(item)}</p>
               <p>{item.copy}</p>
             </article>
           ))}

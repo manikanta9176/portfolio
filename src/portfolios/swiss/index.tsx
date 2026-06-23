@@ -5,6 +5,7 @@ import { useActiveSection } from "@/hooks/use-active-section";
 import { useDismissiblePanel } from "@/hooks/use-dismissible-panel";
 import {
   expertise,
+  formatTimelineOrganization,
   metrics,
   projects,
   siteConfig,
@@ -170,7 +171,6 @@ export function SwissPortfolio() {
 
       <main className="swiss-main">
         <section className="swiss-panel" id="intro">
-          <p className="swiss-kicker">{siteConfig.location}</p>
           <h1>{siteConfig.name}</h1>
           <p className="swiss-role">{siteConfig.role}</p>
           <p>{siteConfig.headline}</p>
@@ -203,7 +203,7 @@ export function SwissPortfolio() {
               <p>{item.period}</p>
               <div>
                 <h3>{item.title}</h3>
-                <p>{item.organization}</p>
+                <p>{formatTimelineOrganization(item)}</p>
                 <p>{item.copy}</p>
               </div>
             </article>
