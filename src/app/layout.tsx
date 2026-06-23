@@ -1,31 +1,49 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { siteConfig } from "@/lib/profile";
+import { DM_Sans, IBM_Plex_Mono, JetBrains_Mono, Syne } from "next/font/google";
+import { PortfolioProvider } from "@/portfolios/provider";
+import { PORTFOLIO_STORAGE_KEY, portfolioIds } from "@/portfolios/registry";
+import { siteConfig, timeline } from "@/lib/profile";
 import "./globals.css";
+import "./site-cursor.css";
+import "./portfolios.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
+  weight: ["700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Potnuru Manikanta | Senior Full Stack Developer",
-    template: "%s | Potnuru Manikanta",
+    default: `${siteConfig.name} | Senior Full Stack Developer`,
+    template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  applicationName: "Potnuru Manikanta Portfolio",
+  applicationName: `${siteConfig.name} Portfolio`,
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
   keywords: [
-    "Potnuru Manikanta",
     "Manikanta Potnuru",
+    "Potnuru Manikanta",
     "Senior Full Stack Developer",
     "React Developer",
     "Next.js Developer",
@@ -36,10 +54,10 @@ export const metadata: Metadata = {
     "GraphQL",
   ],
   openGraph: {
-    title: "Potnuru Manikanta | Senior Full Stack Developer",
+    title: `${siteConfig.name} | Senior Full Stack Developer`,
     description: siteConfig.description,
     url: siteConfig.url,
-    siteName: "Potnuru Manikanta Portfolio",
+    siteName: `${siteConfig.name} Portfolio`,
     locale: "en_IN",
     type: "website",
     images: [
@@ -47,18 +65,22 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Potnuru Manikanta portfolio preview",
+        alt: `${siteConfig.name} portfolio preview`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Potnuru Manikanta | Senior Full Stack Developer",
+    title: `${siteConfig.name} | Senior Full Stack Developer`,
     description: siteConfig.description,
     images: ["/opengraph-image"],
   },
   alternates: {
     canonical: siteConfig.url,
+  },
+  icons: {
+    icon: [{ url: "/favicons/editorial.svg", type: "image/svg+xml" }],
+    shortcut: [{ url: "/favicons/editorial.svg", type: "image/svg+xml" }],
   },
   category: "technology",
 };
@@ -75,10 +97,14 @@ export default function RootLayout({
     jobTitle: siteConfig.role,
     url: siteConfig.url,
     email: siteConfig.email,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Hyderabad",
-      addressCountry: "IN",
+    workLocation: {
+      "@type": "Place",
+      name: timeline[0]?.organization ?? "Current office",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: timeline[0]?.location ?? "Hyderabad",
+        addressCountry: "IN",
+      },
     },
     sameAs: [siteConfig.github, siteConfig.linkedin, siteConfig.bioProfile],
     knowsAbout: [
@@ -93,17 +119,27 @@ export default function RootLayout({
     ],
   };
 
+  const portfolioInitScript = `(function(){var k=${JSON.stringify(PORTFOLIO_STORAGE_KEY)};var t=${JSON.stringify(portfolioIds)};var s=sessionStorage.getItem(k);if(!s||t.indexOf(s)<0){s=t[Math.floor(Math.random()*t.length)];sessionStorage.setItem(k,s);}document.documentElement.dataset.portfolio=s;var i=document.querySelector('link[data-portfolio-icon],link[rel=\"icon\"]');if(!i){i=document.createElement('link');i.rel='icon';document.head.appendChild(i);}i.type='image/svg+xml';i.setAttribute('data-portfolio-icon','true');i.href='/favicons/'+s+'.svg';})();`;
+
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${syne.variable} ${dmSans.variable} ${ibmPlexMono.variable} ${jetBrainsMono.variable} h-full antialiased`}
+      data-portfolio="editorial"
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{ __html: portfolioInitScript }}
+          suppressHydrationWarning
+        />
+      </head>
       <body className="flex min-h-full flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-        {children}
+        <PortfolioProvider>{children}</PortfolioProvider>
       </body>
     </html>
   );

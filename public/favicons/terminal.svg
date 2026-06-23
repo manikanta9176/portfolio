@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="MP">
+<style>@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:700;src:url("/fonts/jetbrains-mono-700.woff") format("woff");}</style>
+<rect width="32" height="32" fill="#050805"/>
+<rect x="0.5" y="0.5" width="31" height="31" fill="none" stroke="#39ff14" stroke-opacity="0.28"/>
+<text x="16" y="21.5" text-anchor="middle" fill="#39ff14" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="12" letter-spacing="-0.4">MP</text>
+</svg>

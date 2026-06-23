@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="MP">
+<style>@font-face{font-family:"Syne";font-style:normal;font-weight:800;src:url("/fonts/syne-800.woff") format("woff");}</style>
+<rect width="32" height="32" fill="#ffffff"/>
+<text x="16" y="21.5" text-anchor="middle" fill="#111111" font-family="'Syne', sans-serif" font-weight="800" font-size="15" letter-spacing="-0.6">MP</text>
+<rect x="8" y="24.5" width="16" height="2.5" fill="#e10600"/>
+</svg>

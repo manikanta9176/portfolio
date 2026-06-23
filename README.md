@@ -1,6 +1,6 @@
-# Potnuru Manikanta Portfolio
+# Manikanta Potnuru Portfolio
 
-A premium personal portfolio for Potnuru Manikanta, built to present him as a senior full-stack product engineer with strong React/Next.js craft, backend fluency, CMS/API experience, and recent deployment tooling activity.
+A premium personal portfolio for Manikanta Potnuru, built to present him as a senior full-stack product engineer with strong React/Next.js craft, backend fluency, CMS/API experience, and recent deployment tooling activity.
 
 The site intentionally avoids a generic portfolio template. It is structured as a compact product story: identity signal, technical range, career trajectory, selected proof, architecture thinking, and direct contact.
 

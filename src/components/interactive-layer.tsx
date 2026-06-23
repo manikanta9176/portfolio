@@ -1,12 +1,28 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import { PortfolioPicker } from "@/components/portfolio-picker";
+import { useActiveSection } from "@/hooks/use-active-section";
+import { getPortfolioSectionIds } from "@/lib/portfolio-sections";
 import { commands } from "@/lib/profile";
 
-const sections = ["intro", "signal", "work", "systems", "contact"];
+const noirLabels: Record<string, string> = {
+  intro: "Intro",
+  signal: "Signal",
+  work: "Work",
+  systems: "Systems",
+  contact: "Contact",
+};
+
+const sectionIds = getPortfolioSectionIds("noir");
+const sections = sectionIds.map((id) => ({
+  id,
+  label: noirLabels[id] ?? id,
+}));
 
 export function InteractiveLayer() {
-  const [activeSection, setActiveSection] = useState(sections[0]);
+  const activeSection = useActiveSection(sectionIds, "-38% 0px -50% 0px");
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [pointer, setPointer] = useState({ x: 50, y: 50 });
 
@@ -43,30 +59,72 @@ export function InteractiveLayer() {
   }, []);
 
   useEffect(() => {
-    const observers = sections
-      .map((id) => document.getElementById(id))
-      .filter((section): section is HTMLElement => Boolean(section))
-      .map((section) => {
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              setActiveSection(section.id);
-            }
-          },
-          { rootMargin: "-38% 0px -50% 0px", threshold: 0.01 },
-        );
+    if (!paletteOpen) {
+      return;
+    }
 
-        observer.observe(section);
-        return observer;
-      });
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.body.classList.add("overlay-open");
 
-    return () => observers.forEach((observer) => observer.disconnect());
-  }, []);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.body.classList.remove("overlay-open");
+    };
+  }, [paletteOpen]);
 
   const activeIndex = useMemo(
-    () => Math.max(0, sections.indexOf(activeSection)),
+    () => Math.max(0, sections.findIndex((section) => section.id === activeSection)),
     [activeSection],
   );
+
+  const activeStop = sections[activeIndex] ?? sections[0];
+
+  const commandDialog = paletteOpen ? (
+    <div
+      aria-modal="true"
+      className="noir-command-backdrop"
+      onClick={() => setPaletteOpen(false)}
+      role="dialog"
+    >
+      <div
+        className="noir-command-panel"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="border-b border-white/10 px-5 py-4">
+          <p className="text-xs uppercase tracking-[0.35em] text-cyan-200">
+            Command palette
+          </p>
+          <p className="mt-2 text-sm text-white/55">
+            Fast routes to the most important professional signals.
+          </p>
+        </div>
+        <div className="p-3">
+          {commands.map((command) => (
+            <a
+              className="group flex items-center justify-between rounded-2xl px-4 py-4 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
+              href={command.href}
+              key={command.label}
+              rel="noreferrer"
+              target={command.href.startsWith("mailto:") ? undefined : "_blank"}
+            >
+              <span>{command.label}</span>
+              <span className="text-white/30 transition group-hover:translate-x-1 group-hover:text-cyan-200">
+                -&gt;
+              </span>
+            </a>
+          ))}
+        </div>
+        <button
+          className="w-full border-t border-white/10 px-5 py-4 text-left text-xs uppercase tracking-[0.28em] text-white/40 transition hover:bg-white/5 hover:text-white/70"
+          onClick={() => setPaletteOpen(false)}
+          type="button"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  ) : null;
 
   return (
     <>
@@ -78,76 +136,64 @@ export function InteractiveLayer() {
         }}
       />
 
-      <nav
-        aria-label="Section navigation"
-        className="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 rounded-full border border-white/10 bg-white/[0.03] p-2 shadow-2xl shadow-black/30 backdrop-blur-xl lg:block"
-      >
+      <nav aria-label="Section navigation" className="noir-desktop-rail">
         {sections.map((section, index) => (
           <a
-            aria-label={`Jump to ${section}`}
-            className={`block h-3 w-3 rounded-full transition ${
-              index === activeIndex
-                ? "my-4 bg-cyan-200 shadow-[0_0_24px_rgba(125,211,252,0.9)]"
-                : "my-3 bg-white/25 hover:bg-white/60"
+            aria-current={index === activeIndex ? "location" : undefined}
+            aria-label={`Jump to ${section.label}`}
+            className={`noir-rail-stop${
+              index === activeIndex ? " noir-rail-stop-active" : ""
             }`}
-            href={`#${section}`}
-            key={section}
-          />
+            href={`#${section.id}`}
+            key={section.id}
+          >
+            <span className="noir-rail-stop-label">{section.label}</span>
+            <span aria-hidden="true" className="noir-rail-stop-dot" />
+          </a>
         ))}
       </nav>
 
-      <button
-        className="fixed bottom-5 right-5 z-50 rounded-full border border-white/15 bg-slate-950/80 px-4 py-3 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-100 shadow-2xl shadow-cyan-950/30 backdrop-blur transition hover:border-cyan-200/60 hover:text-white"
-        onClick={() => setPaletteOpen(true)}
-        type="button"
+      <nav
+        aria-label="Mobile section navigation"
+        className="noir-mobile-dock lg:hidden"
       >
-        Command
-        <span className="ml-2 rounded-full border border-white/15 px-2 py-1 text-[0.6rem] text-white/50">
-          Cmd K
-        </span>
-      </button>
-
-      {paletteOpen ? (
-        <div
-          aria-modal="true"
-          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 px-4 backdrop-blur-md"
-          role="dialog"
-        >
-          <div className="w-full max-w-xl overflow-hidden rounded-[2rem] border border-white/15 bg-[#07101f]/95 shadow-2xl shadow-black/50">
-            <div className="border-b border-white/10 px-5 py-4">
-              <p className="text-xs uppercase tracking-[0.35em] text-cyan-200">
-                Command palette
-              </p>
-              <p className="mt-2 text-sm text-white/55">
-                Fast routes to the most important professional signals.
-              </p>
-            </div>
-            <div className="p-3">
-              {commands.map((command) => (
-                <a
-                  className="group flex items-center justify-between rounded-2xl px-4 py-4 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
-                  href={command.href}
-                  key={command.label}
-                  rel="noreferrer"
-                  target={command.href.startsWith("mailto:") ? undefined : "_blank"}
-                >
-                  <span>{command.label}</span>
-                  <span className="text-white/30 transition group-hover:translate-x-1 group-hover:text-cyan-200">
-                    -&gt;
-                  </span>
-                </a>
-              ))}
-            </div>
-            <button
-              className="w-full border-t border-white/10 px-5 py-4 text-left text-xs uppercase tracking-[0.28em] text-white/40 transition hover:bg-white/5 hover:text-white/70"
-              onClick={() => setPaletteOpen(false)}
-              type="button"
-            >
-              Close
-            </button>
-          </div>
+        <p aria-live="polite" className="noir-mobile-dock-label">
+          <span>{String(activeIndex + 1).padStart(2, "0")}</span>
+          <span>{activeStop.label}</span>
+        </p>
+        <div className="noir-mobile-dock-track" role="group" aria-label="Section progress">
+          {sections.map((section, index) => (
+            <a
+              aria-current={index === activeIndex ? "step" : undefined}
+              aria-label={section.label}
+              className={`noir-mobile-dock-node${
+                index === activeIndex ? " noir-mobile-dock-node-active" : ""
+              }${index < activeIndex ? " noir-mobile-dock-node-done" : ""}`}
+              href={`#${section.id}`}
+              key={section.id}
+            />
+          ))}
         </div>
-      ) : null}
+      </nav>
+
+      <header className="noir-chrome">
+        <a className="noir-mark" href="#intro">
+          MP
+        </a>
+        <div className="noir-chrome-actions">
+          <PortfolioPicker className="noir-picker-trigger" label="Portfolios" showMeta={false} />
+          <button
+            className="noir-command-trigger"
+            onClick={() => setPaletteOpen(true)}
+            type="button"
+          >
+            Command
+            <span className="noir-command-kbd">Cmd K</span>
+          </button>
+        </div>
+      </header>
+
+      {commandDialog ? createPortal(commandDialog, document.body) : null}
     </>
   );
 }

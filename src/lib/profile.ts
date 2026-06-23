@@ -1,8 +1,8 @@
 export const siteConfig = {
-  name: "Potnuru Manikanta",
+  name: "Manikanta Potnuru",
+  displayName: ["Manikanta", "Potnuru"],
   role: "Senior Full Stack Developer",
   url: "https://manikanta.net",
-  location: "Hyderabad, India",
   email: "manikantapotnuru9176@gmail.com",
   github: "https://github.com/manikanta9176",
   linkedin: "https://www.linkedin.com/in/manikantapotnuru/",
@@ -11,8 +11,36 @@ export const siteConfig = {
   headline:
     "Full-stack product engineer building fast interfaces, reliable backends, and deployment-ready systems.",
   description:
-    "Portfolio of Potnuru Manikanta, a senior full-stack developer focused on React, Next.js, TypeScript, backend services, CMS platforms, and modern deployment workflows.",
+    "Portfolio of Manikanta Potnuru, a senior full-stack developer focused on React, Next.js, TypeScript, backend services, CMS platforms, and modern deployment workflows.",
 };
+
+export function formatTimelineOrganization(item: {
+  organization: string;
+  location: string;
+}) {
+  return `${item.organization} — ${item.location}`;
+}
+
+export const navSections = [
+  { id: "intro", label: "Index", number: "01" },
+  { id: "craft", label: "Craft", number: "02" },
+  { id: "journey", label: "Journey", number: "03" },
+  { id: "work", label: "Work", number: "04" },
+  { id: "contact", label: "Contact", number: "05" },
+];
+
+export const marqueeItems = [
+  "React",
+  "Next.js",
+  "TypeScript",
+  "GraphQL",
+  "Strapi",
+  "Hasura",
+  "Spring Boot",
+  "Deployment Systems",
+  "Product Engineering",
+  "CMS Platforms",
+];
 
 export const identitySignals = [
   "React and TypeScript product engineering",
@@ -64,6 +92,7 @@ export const timeline = [
     period: "2023 - Present",
     title: "Full Stack Developer",
     organization: "Analytica Enterprise Solutions",
+    location: "Hyderabad",
     copy:
       "Building across the front-end and full-stack surface for a software services environment spanning UI/UX, web platforms, CMS-backed products, and deployment-ready digital systems.",
     proof: ["React", "Next.js", "Payload CMS", "Strapi", "Hasura"],
@@ -72,6 +101,7 @@ export const timeline = [
     period: "2022 - 2023",
     title: "Software Engineer Intern",
     organization: "Revidd / Inflolabs",
+    location: "Visakhapatnam",
     copy:
       "Designed and implemented scalable backend APIs and services, worked with microservice responsibilities, and resolved platform bugs in a Java/Spring and GraphQL environment.",
     proof: ["Spring Boot", "GraphQL", "MongoDB", "Java", "APIs"],
@@ -80,6 +110,7 @@ export const timeline = [
     period: "2019 - 2023",
     title: "B.Tech, Computer Science and Engineering",
     organization: "GMR Institute of Technology",
+    location: "Rajam",
     copy:
       "Built the engineering base across data structures, databases, OOP, web technologies, machine learning, deep learning, and competitive coding.",
     proof: ["CSE", "DSA", "DBMS", "ML", "CodeChef"],
