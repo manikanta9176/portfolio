@@ -303,9 +303,9 @@ main {
   }
 
   @media (min-width: 1024px) {
-    body,
-    a,
-    button {
+    body.custom-cursor,
+    body.custom-cursor a,
+    body.custom-cursor button {
       cursor: none;
     }
   }
@@ -316,9 +316,9 @@ main {
     }
 
     @media (min-width: 1024px) {
-      body,
-      a,
-      button {
+      body.custom-cursor,
+      body.custom-cursor a,
+      body.custom-cursor button {
         cursor: auto;
       }
     }
