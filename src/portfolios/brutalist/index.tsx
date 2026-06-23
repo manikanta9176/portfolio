@@ -1,4 +1,8 @@
+"use client";
+
 import { PortfolioPicker } from "@/components/portfolio-picker";
+import { useActiveSection } from "@/hooks/use-active-section";
+import { useDismissiblePanel } from "@/hooks/use-dismissible-panel";
 import {
   expertise,
   metrics,
@@ -8,9 +12,138 @@ import {
   timeline,
 } from "@/lib/profile";
 
+const sections = [
+  { id: "intro", label: "Start" },
+  { id: "craft", label: "Craft" },
+  { id: "journey", label: "Path" },
+  { id: "work", label: "Work" },
+  { id: "contact", label: "Contact" },
+] as const;
+
+const sectionIds = sections.map((section) => section.id);
+
+function BrutalistStopLink({
+  active,
+  index,
+  onNavigate,
+  section,
+}: {
+  active: string;
+  index: number;
+  onNavigate?: () => void;
+  section: (typeof sections)[number];
+}) {
+  return (
+    <a
+      className={active === section.id ? "brutalist-rail-link-active" : ""}
+      href={`#${section.id}`}
+      onClick={onNavigate}
+    >
+      <span>{String(index + 1).padStart(2, "0")}</span>
+      <span>{section.label}</span>
+    </a>
+  );
+}
+
 export function BrutalistPortfolio() {
+  const active = useActiveSection(sectionIds);
+  const { close, open, openPanel, ref } = useDismissiblePanel();
+
+  const activeSection = sections.find((section) => section.id === active) ?? sections[0];
+  const activeIndex = sections.findIndex((section) => section.id === activeSection.id);
+
+  const toggleLabel = (
+    <>
+      <span className="brutalist-rail-current-index">
+        {String(activeIndex + 1).padStart(2, "0")}
+      </span>
+      <span className="brutalist-rail-current-label">{activeSection.label}</span>
+    </>
+  );
+
   return (
     <div className="brutalist-portfolio">
+      <aside
+        className={`brutalist-rail${open ? " brutalist-rail-expanded" : ""}`}
+        ref={ref}
+      >
+        <nav aria-label="Section navigation" className="brutalist-rail-nav">
+          {sections.map((section, index) => (
+            <BrutalistStopLink
+              active={active}
+              index={index}
+              key={section.id}
+              section={section}
+            />
+          ))}
+        </nav>
+
+        <div className="brutalist-rail-mobile">
+          {open ? (
+            <button
+              aria-controls="brutalist-section-nav"
+              aria-expanded="true"
+              className="brutalist-rail-current"
+              onClick={close}
+              type="button"
+            >
+              {toggleLabel}
+            </button>
+          ) : (
+            <button
+              aria-controls="brutalist-section-nav"
+              aria-expanded="false"
+              className="brutalist-rail-current"
+              onClick={openPanel}
+              type="button"
+            >
+              {toggleLabel}
+            </button>
+          )}
+
+          <div
+            aria-label="Section progress"
+            className="brutalist-rail-blocks"
+            role="group"
+          >
+            {sections.map((section, index) => (
+              <a
+                aria-current={active === section.id ? "step" : undefined}
+                aria-label={section.label}
+                className={`brutalist-rail-block${
+                  index <= activeIndex ? " brutalist-rail-block-done" : ""
+                }${active === section.id ? " brutalist-rail-block-active" : ""}`}
+                href={`#${section.id}`}
+                key={section.id}
+                onClick={close}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div
+          className={`brutalist-rail-unfold${open ? " brutalist-rail-unfold-open" : ""}`}
+          hidden={!open}
+          id="brutalist-section-nav"
+        >
+          {open ? (
+            <nav aria-label="Jump to section" className="brutalist-rail-mobile-nav">
+              {sections.map((section, index) => (
+                <BrutalistStopLink
+                  active={active}
+                  index={index}
+                  key={section.id}
+                  onNavigate={close}
+                  section={section}
+                />
+              ))}
+            </nav>
+          ) : null}
+        </div>
+
+        <PortfolioPicker className="brutalist-rail-picker" label="Switch" showMeta={false} />
+      </aside>
+
       <header className="brutalist-hero" id="intro">
         <p className="brutalist-kicker">{siteConfig.role}</p>
         <h1>
@@ -19,7 +152,6 @@ export function BrutalistPortfolio() {
           {siteConfig.displayName[1]}
         </h1>
         <p className="brutalist-lede">{siteConfig.headline}</p>
-        <PortfolioPicker className="brutalist-picker-trigger" label="Switch layout" />
         <div className="brutalist-metrics">
           {metrics.map((metric) => (
             <div key={metric.label}>
@@ -94,7 +226,6 @@ export function BrutalistPortfolio() {
           </a>
         </div>
       </section>
-
     </div>
   );
 }
