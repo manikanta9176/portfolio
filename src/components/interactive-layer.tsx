@@ -181,7 +181,7 @@ export function InteractiveLayer() {
           MP
         </a>
         <div className="noir-chrome-actions">
-          <PortfolioPicker className="noir-picker-trigger" label="Portfolios" showMeta={false} />
+          <PortfolioPicker className="noir-picker-trigger" showMeta={false} />
           <button
             className="noir-command-trigger"
             onClick={() => setPaletteOpen(true)}

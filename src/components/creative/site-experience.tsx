@@ -118,7 +118,7 @@ export function SiteExperience() {
         </div>
 
         <div className="site-header-end">
-          <PortfolioPicker className="site-command" label="Portfolios" showMeta={false} />
+          <PortfolioPicker className="site-command" showMeta={false} />
           <button
             className="site-command"
             onClick={() => setPaletteOpen(true)}

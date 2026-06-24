@@ -36,7 +36,7 @@ export function TerminalPortfolio() {
             <span />
           </div>
           <p>manikanta@portfolio — bash — 80×24</p>
-          <PortfolioPicker className="terminal-picker-trigger" label="layouts" showMeta={false} />
+          <PortfolioPicker className="terminal-picker-trigger" showMeta={false} />
         </header>
 
         <nav aria-label="Section navigation" className="terminal-tabs">

@@ -34,7 +34,7 @@ export function BentoPortfolio() {
           <h1>{siteConfig.name}</h1>
         </div>
         <div className="bento-topbar-actions">
-          <PortfolioPicker className="bento-picker-trigger" label="Layouts" showMeta={false} />
+          <PortfolioPicker className="bento-picker-trigger" showMeta={false} />
         </div>
       </header>
 

@@ -8,14 +8,18 @@ import {
   useSyncExternalStore,
 } from "react";
 import {
+  DEFAULT_PORTFOLIO_ID,
   getPortfolio,
   isPortfolioId,
   pickRandomPortfolio,
-  PORTFOLIO_STORAGE_KEY,
   portfolios,
 } from "./registry";
 import type { PortfolioDefinition, PortfolioId } from "./types";
 import { syncPortfolioFavicon } from "@/lib/portfolio-favicons";
+import {
+  resolvePortfolioPreference,
+  writePortfolioPreference,
+} from "@/lib/portfolio-preference";
 
 interface PortfolioContextValue {
   portfolio: PortfolioDefinition;
@@ -34,7 +38,7 @@ type PortfolioSnapshot = {
 };
 
 const SERVER_SNAPSHOT: PortfolioSnapshot = {
-  portfolioId: "editorial",
+  portfolioId: DEFAULT_PORTFOLIO_ID,
   ready: false,
 };
 
@@ -44,7 +48,7 @@ const listeners = new Set<() => void>();
 
 function resolvePortfolioId(): PortfolioId {
   if (typeof window === "undefined") {
-    return "editorial";
+    return DEFAULT_PORTFOLIO_ID;
   }
 
   const domPortfolio = document.documentElement.dataset.portfolio;
@@ -52,15 +56,10 @@ function resolvePortfolioId(): PortfolioId {
     return domPortfolio;
   }
 
-  const stored = sessionStorage.getItem(PORTFOLIO_STORAGE_KEY);
-  if (isPortfolioId(stored)) {
-    return stored;
-  }
-
-  const randomPortfolio = pickRandomPortfolio();
-  sessionStorage.setItem(PORTFOLIO_STORAGE_KEY, randomPortfolio);
-  document.documentElement.dataset.portfolio = randomPortfolio;
-  return randomPortfolio;
+  const portfolioId = resolvePortfolioPreference();
+  writePortfolioPreference(portfolioId);
+  document.documentElement.dataset.portfolio = portfolioId;
+  return portfolioId;
 }
 
 function subscribe(listener: () => void) {
@@ -96,7 +95,7 @@ function getSnapshot(): PortfolioSnapshot {
 
 function applyPortfolio(id: PortfolioId) {
   snapshot = { portfolioId: id, ready: true };
-  sessionStorage.setItem(PORTFOLIO_STORAGE_KEY, id);
+  writePortfolioPreference(id);
   document.documentElement.dataset.portfolio = id;
   syncPortfolioFavicon(id);
   delete document.body.dataset.mood;

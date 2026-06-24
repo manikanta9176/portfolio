@@ -1,6 +1,7 @@
 import type { PortfolioDefinition, PortfolioId } from "./types";
 
 export const PORTFOLIO_STORAGE_KEY = "portfolio-variant";
+export const DEFAULT_PORTFOLIO_ID = "editorial" satisfies PortfolioId;
 
 export const portfolios: PortfolioDefinition[] = [
   {

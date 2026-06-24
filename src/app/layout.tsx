@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, IBM_Plex_Mono, JetBrains_Mono, Syne } from "next/font/google";
 import { PortfolioProvider } from "@/portfolios/provider";
-import { PORTFOLIO_STORAGE_KEY, portfolioIds } from "@/portfolios/registry";
+import { DEFAULT_PORTFOLIO_ID, PORTFOLIO_STORAGE_KEY, portfolioIds } from "@/portfolios/registry";
 import { siteConfig, timeline } from "@/lib/profile";
 import "./globals.css";
 import "./site-cursor.css";
@@ -119,7 +119,7 @@ export default function RootLayout({
     ],
   };
 
-  const portfolioInitScript = `(function(){var k=${JSON.stringify(PORTFOLIO_STORAGE_KEY)};var t=${JSON.stringify(portfolioIds)};var s=sessionStorage.getItem(k);if(!s||t.indexOf(s)<0){s=t[Math.floor(Math.random()*t.length)];sessionStorage.setItem(k,s);}document.documentElement.dataset.portfolio=s;var i=document.querySelector('link[data-portfolio-icon],link[rel=\"icon\"]');if(!i){i=document.createElement('link');i.rel='icon';document.head.appendChild(i);}i.type='image/svg+xml';i.setAttribute('data-portfolio-icon','true');i.href='/favicons/'+s+'.svg';})();`;
+  const portfolioInitScript = `(function(){var k=${JSON.stringify(PORTFOLIO_STORAGE_KEY)};var t=${JSON.stringify(portfolioIds)};var d=${JSON.stringify(DEFAULT_PORTFOLIO_ID)};var s=localStorage.getItem(k);if(!s||t.indexOf(s)<0){try{var legacy=sessionStorage.getItem(k);if(legacy&&t.indexOf(legacy)>=0){s=legacy;}}catch(e){}}if(!s||t.indexOf(s)<0){s=d;}localStorage.setItem(k,s);try{sessionStorage.removeItem(k);}catch(e){}document.documentElement.dataset.portfolio=s;var i=document.querySelector('link[data-portfolio-icon],link[rel=\"icon\"]');if(!i){i=document.createElement('link');i.rel='icon';document.head.appendChild(i);}i.type='image/svg+xml';i.setAttribute('data-portfolio-icon','true');i.href='/favicons/'+s+'.svg';})();`;
 
   return (
     <html

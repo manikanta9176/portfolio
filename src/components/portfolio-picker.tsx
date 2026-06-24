@@ -14,7 +14,7 @@ interface PortfolioPickerProps {
 
 export function PortfolioPicker({
   className = "",
-  label = "Portfolios",
+  label = "Layouts",
   showMeta = true,
 }: PortfolioPickerProps) {
   const { portfolioId, portfolio } = usePortfolio();
