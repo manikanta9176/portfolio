@@ -40,7 +40,7 @@ const chapters = [
     roman: "IV",
     title: "Selected Works",
     leftNote: "Exhibit catalog",
-    margin: "Projects filed under reference numbers, cross-indexed for inspection.",
+    margin: "Projects listed in the catalog, continued on the facing page.",
   },
   {
     id: "contact",
@@ -64,9 +64,7 @@ type BookPhase = "closed" | "opening" | "open";
 type FolioSpreadDefinition = {
   chapter: ChapterId;
   id: string;
-  left: ReactNode;
   right: ReactNode;
-  spine: string;
 };
 
 function setCursorHand(mode: "turn" | null) {
@@ -120,6 +118,72 @@ function FolioChapterIntro({ id }: { id: ChapterId }) {
   );
 }
 
+function FolioChapterLeft({ id }: { id: ChapterId }) {
+  switch (id) {
+    case "intro":
+      return (
+        <>
+          <p className="folio-vol">Vol. I</p>
+          <FolioChapterIntro id="intro" />
+        </>
+      );
+    case "craft":
+      return (
+        <>
+          <FolioChapterIntro id="craft" />
+          <ul className="folio-index">
+            {expertise.map((item, index) => (
+              <li key={item.title}>
+                {String(index + 1).padStart(2, "0")}. {item.title}
+              </li>
+            ))}
+          </ul>
+        </>
+      );
+    case "journey":
+      return (
+        <>
+          <FolioChapterIntro id="journey" />
+          <ul className="folio-principles">
+            {principles.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+        </>
+      );
+    case "work":
+      return (
+        <>
+          <FolioChapterIntro id="work" />
+          <ol className="folio-catalog">
+            {projects.map((project, index) => (
+              <li key={project.name}>
+                {String(index + 1).padStart(2, "0")}. {project.name}
+              </li>
+            ))}
+          </ol>
+        </>
+      );
+    case "contact":
+      return (
+        <>
+          <FolioChapterIntro id="contact" />
+          <div aria-hidden="true" className="folio-wax-seal">
+            <span>MP</span>
+          </div>
+        </>
+      );
+  }
+}
+
+const chapterSpine: Record<ChapterId, string> = {
+  intro: "POTNURU",
+  craft: "CRAFT",
+  journey: "JOURNEY",
+  work: "WORK",
+  contact: "CONTACT",
+};
+
 function FolioExpertiseEntries({ start, end }: { start: number; end: number }) {
   return (
     <div className="folio-entries">
@@ -163,19 +227,21 @@ function FolioProjectEntries({ start, end }: { start: number; end: number }) {
 
         return (
           <article className="folio-entry folio-entry-catalog" key={project.name}>
-            <p className="folio-entry-ref">Ref. {String(index + 1).padStart(2, "0")}</p>
             <p className="folio-entry-type">
-              {project.type} · {project.year}
+              {String(index + 1).padStart(2, "0")}. {project.type} · {project.year}
             </p>
             <h3>{project.name}</h3>
             <p>{project.copy}</p>
-            <div className="folio-entry-links">
-              {project.links.map((link) => (
-                <a href={link.href} key={link.href} rel="noreferrer" target="_blank">
-                  {link.label}
-                </a>
+            <p className="folio-entry-links">
+              {project.links.map((link, linkIndex) => (
+                <span key={link.href}>
+                  {linkIndex > 0 ? " · " : null}
+                  <a href={link.href} rel="noreferrer" target="_blank">
+                    {link.label}
+                  </a>
+                </span>
               ))}
-            </div>
+            </p>
           </article>
         );
       })}
@@ -187,13 +253,6 @@ const folioSpreads: FolioSpreadDefinition[] = [
   {
     chapter: "intro",
     id: "intro",
-    spine: "POTNURU",
-    left: (
-      <>
-        <p className="folio-vol">Vol. I</p>
-        <FolioChapterIntro id="intro" />
-      </>
-    ),
     right: (
       <>
         <p className="folio-right-kicker">Personal register · {siteConfig.role}</p>
@@ -212,113 +271,37 @@ const folioSpreads: FolioSpreadDefinition[] = [
   },
   {
     chapter: "craft",
-    id: "craft-index",
-    spine: "CRAFT",
-    left: (
-      <>
-        <FolioChapterIntro id="craft" />
-        <ul className="folio-index">
-          {expertise.map((item, index) => (
-            <li key={item.title}>
-              {String(index + 1).padStart(2, "0")}. {item.title}
-            </li>
-          ))}
-        </ul>
-      </>
-    ),
+    id: "craft-1",
     right: <FolioExpertiseEntries start={0} end={2} />,
   },
   {
     chapter: "craft",
-    id: "craft-notes",
-    spine: "CRAFT",
-    left: <FolioExpertiseEntries start={2} end={4} />,
-    right: (
-      <>
-        <p className="folio-right-kicker">Operating notes</p>
-        <p className="folio-lede">
-          The craft is deliberately divided across pages: product surfaces, service
-          contracts, release paths, and analytical thinking each get room to breathe.
-        </p>
-      </>
-    ),
+    id: "craft-2",
+    right: <FolioExpertiseEntries start={2} end={4} />,
   },
   {
     chapter: "journey",
-    id: "journey-index",
-    spine: "JOURNEY",
-    left: (
-      <>
-        <FolioChapterIntro id="journey" />
-        <ul className="folio-principles">
-          {principles.map((line) => (
-            <li key={line}>{line}</li>
-          ))}
-        </ul>
-      </>
-    ),
+    id: "journey-1",
     right: <FolioTimelineEntries start={0} end={2} />,
   },
   {
     chapter: "journey",
-    id: "journey-archive",
-    spine: "JOURNEY",
-    left: <FolioTimelineEntries start={2} end={3} />,
-    right: (
-      <>
-        <p className="folio-right-kicker">Chronicle margin</p>
-        <p className="folio-lede">
-          Each role is kept as a separate entry instead of forcing the page to scroll.
-          The next turn continues the record like a physical notebook would.
-        </p>
-      </>
-    ),
+    id: "journey-2",
+    right: <FolioTimelineEntries start={2} end={3} />,
   },
   {
     chapter: "work",
-    id: "work-index",
-    spine: "WORK",
-    left: (
-      <>
-        <FolioChapterIntro id="work" />
-        <ol className="folio-catalog">
-          {projects.map((project, index) => (
-            <li key={project.name}>
-              Ref. {String(index + 1).padStart(2, "0")} — {project.name}
-            </li>
-          ))}
-        </ol>
-      </>
-    ),
+    id: "work-1",
     right: <FolioProjectEntries start={0} end={2} />,
   },
   {
     chapter: "work",
-    id: "work-records",
-    spine: "WORK",
-    left: <FolioProjectEntries start={2} end={4} />,
-    right: (
-      <>
-        <p className="folio-right-kicker">Reference shelf</p>
-        <p className="folio-lede">
-          Links stay close to their records, but long lists are split into another
-          spread so the notebook never needs an inner scrollbar.
-        </p>
-      </>
-    ),
+    id: "work-2",
+    right: <FolioProjectEntries start={2} end={4} />,
   },
   {
     chapter: "contact",
     id: "contact",
-    spine: "CONTACT",
-    left: (
-      <>
-        <FolioChapterIntro id="contact" />
-        <div aria-hidden="true" className="folio-wax-seal">
-          <span>MP</span>
-        </div>
-      </>
-    ),
     right: (
       <div className="folio-page-letter">
         <p className="folio-letter-date">{new Date().getFullYear()}</p>
@@ -395,12 +378,12 @@ function FolioSpread({
   return (
     <section className={`folio-spread ${className}`.trim()} id={id}>
       <FolioPage pageNumber={spreadIndex * 2 + 1} side="left">
-        {spread.left}
+        <FolioChapterLeft id={spread.chapter} />
       </FolioPage>
       <FolioPage pageNumber={spreadIndex * 2 + 2} side="right">
         {spread.right}
       </FolioPage>
-      <FolioSpine label={spread.spine} />
+      <FolioSpine label={chapterSpine[spread.chapter]} />
     </section>
   );
 }
@@ -422,7 +405,7 @@ function FolioSpreadPage({
 
   return (
     <FolioPage pageNumber={spreadIndex * 2 + (side === "left" ? 1 : 2)} side={side}>
-      {spread[side]}
+      {side === "left" ? <FolioChapterLeft id={spread.chapter} /> : spread.right}
     </FolioPage>
   );
 }
@@ -486,13 +469,13 @@ function FolioTurnOverlay({
           <>
             <FolioSpreadPage side="left" spread={fromSpread} spreadIndex={turn.from} />
             <FolioSpreadPage side="right" spread={toSpread} spreadIndex={turn.to} />
-            <FolioSpine label={toSpread.spine} />
+            <FolioSpine label={chapterSpine[toSpread.chapter]} />
           </>
         ) : (
           <>
             <FolioSpreadPage side="left" spread={toSpread} spreadIndex={turn.to} />
             <FolioSpreadPage side="right" spread={fromSpread} spreadIndex={turn.from} />
-            <FolioSpine label={fromSpread.spine} />
+            <FolioSpine label={chapterSpine[fromSpread.chapter]} />
           </>
         )}
       </div>
@@ -519,14 +502,14 @@ function FolioTurnOverlay({
                 side="left"
                 className="folio-page-turning"
               >
-                {fromSpread.left}
+                <FolioChapterLeft id={fromSpread.chapter} />
               </FolioPage>
             )}
           </div>
           <div className="folio-flip-face folio-flip-face-reverse">
             {forward ? (
               <FolioPage pageNumber={turn.to * 2 + 1} side="left" className="folio-page-turning">
-                {toSpread.left}
+                <FolioChapterLeft id={toSpread.chapter} />
               </FolioPage>
             ) : (
               <FolioPage pageNumber={turn.to * 2 + 2} side="right" className="folio-page-turning">

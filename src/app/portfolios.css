@@ -3872,6 +3872,14 @@ html[data-portfolio="folio"] body {
   margin-top: var(--folio-line);
 }
 
+.folio-entry > :where(p, h3) + :where(p, h3) {
+  margin-top: 0;
+}
+
+.folio-entry + .folio-entry {
+  margin-top: var(--folio-line);
+}
+
 .folio-script-label {
   font-family: var(--font-caveat), cursive;
   font-size: calc(var(--folio-script) * 0.78);
@@ -4045,9 +4053,13 @@ html[data-portfolio="folio"] body {
   color: var(--folio-ink);
 }
 
+.folio-page > .folio-entries {
+  top: 0;
+}
+
 .folio-entries {
-  display: grid;
-  gap: var(--folio-line);
+  display: flex;
+  flex-direction: column;
 }
 
 .folio-entry {
@@ -4062,11 +4074,11 @@ html[data-portfolio="folio"] body {
   font-size: calc(var(--folio-script) * 0.76);
   font-weight: 600;
   letter-spacing: 0.04em;
+  line-height: var(--folio-line);
   color: rgba(180, 40, 40, 0.72);
 }
 
 .folio-entry h3 {
-  margin-top: 0;
   font-family: var(--font-caveat), cursive;
   font-size: calc(var(--folio-script) * 1.08);
   font-weight: 700;
@@ -4079,11 +4091,11 @@ html[data-portfolio="folio"] body {
   font-family: var(--font-caveat), cursive;
   font-size: calc(var(--folio-script) * 0.92);
   font-weight: 500;
+  line-height: var(--folio-line);
   color: rgba(61, 37, 23, 0.62);
 }
 
 .folio-entry p {
-  margin-top: 0;
   font-family: var(--font-caveat), cursive;
   font-size: var(--folio-script);
   font-weight: 500;
@@ -4092,29 +4104,19 @@ html[data-portfolio="folio"] body {
 }
 
 .folio-entry-tags {
-  margin-top: 0;
   font-family: var(--font-caveat), cursive;
   font-size: calc(var(--folio-script) * 0.88);
   font-weight: 500;
+  line-height: var(--folio-line);
   color: rgba(61, 37, 23, 0.58);
 }
 
-.folio-entry-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-top: calc(var(--folio-line) * 0.35);
-}
-
 .folio-entry-links a {
-  padding: 0 0.4rem;
-  border: 1px solid rgba(107, 66, 38, 0.3);
-  border-radius: 999px;
-  font-family: var(--font-caveat), cursive;
-  font-size: calc(var(--folio-script) * 0.82);
+  color: rgba(180, 40, 40, 0.82);
   font-weight: 600;
-  line-height: calc(var(--folio-line) - 0.2rem);
-  color: #5c3317;
+  text-decoration: underline;
+  text-decoration-color: rgba(180, 40, 40, 0.34);
+  text-underline-offset: 0.12em;
 }
 
 .folio-page-letter {
