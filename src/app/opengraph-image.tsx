@@ -93,10 +93,15 @@ export default function OpenGraphImage() {
           <div
             style={{
               display: "flex",
-              fontSize: 20,
-              letterSpacing: 6,
+              alignItems: "center",
+              borderRadius: 999,
+              padding: "12px 24px",
+              background: "#111111",
+              color: "#ece6da",
+              fontSize: 22,
+              fontWeight: 900,
+              letterSpacing: 1.5,
               textTransform: "uppercase",
-              color: "#5f5950",
             }}
           >
             View portfolio →
