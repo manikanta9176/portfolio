@@ -75,6 +75,10 @@ export function PortfolioPicker({ className = "" }: PortfolioPickerProps) {
       kicker: "Gift shop exit",
       title: "Leave this hall for another dimension of the same person.",
     },
+    folio: {
+      kicker: "Notebook index",
+      title: "Choose another volume bound in the same black leather.",
+    },
   }[portfolioId];
 
   const dialog = open ? (

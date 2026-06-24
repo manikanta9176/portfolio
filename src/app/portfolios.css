@@ -3206,3 +3206,1221 @@ html[data-portfolio="oddity"] body {
     display: none;
   }
 }
+
+/* ── Folio Ledger ──────────────────────────────────────────────── */
+
+html[data-portfolio="folio"] {
+  --folio-line: clamp(1.45rem, 3.6vmin, 1.75rem);
+  --folio-ink: #141414;
+  --folio-ink-soft: rgba(20, 20, 20, 0.78);
+  --folio-rule: rgba(40, 52, 88, 0.24);
+  --folio-margin-rule: rgba(180, 40, 40, 0.58);
+  --folio-pad-x: clamp(0.55rem, 2.8vw, 1.25rem);
+  --folio-rule-offset: calc(var(--folio-line) * 2);
+  --folio-script: clamp(1rem, 2.4vmin, 1.32rem);
+  --folio-script-lg: clamp(1.28rem, 3.6vmin, 1.85rem);
+  --folio-script-xl: clamp(1.65rem, 4.8vmin, 2.35rem);
+  --folio-cover-shadow: 0;
+}
+
+html[data-portfolio="folio"] body {
+  overflow: hidden;
+  background: #050505;
+  color: var(--folio-ink);
+}
+
+.folio-portfolio {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template:
+    "chrome chrome bookmarks" auto
+    "book book bookmarks" 1fr
+    "turn turn bookmarks" auto
+    / minmax(0, 1fr) minmax(0, 1fr) minmax(9rem, 11rem);
+  gap: 0;
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(180, 40, 40, 0.08), transparent 38%),
+    radial-gradient(circle at 82% 88%, rgba(255, 255, 255, 0.03), transparent 42%),
+    linear-gradient(165deg, #0a0a0a 0%, #030303 100%);
+}
+
+.folio-chrome {
+  grid-area: chrome;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  padding-bottom: 0.75rem;
+  color: #ececec;
+}
+
+.folio-chrome-kicker {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(220, 60, 60, 0.75);
+}
+
+.folio-chrome-title {
+  flex: 1;
+  font-family: var(--font-cinzel), serif;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.folio-picker-trigger {
+  border-color: rgba(220, 60, 60, 0.45) !important;
+  background: rgba(10, 10, 10, 0.92) !important;
+  color: #ececec !important;
+}
+
+.folio-bookmarks {
+  grid-area: bookmarks;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-left: 0.65rem;
+}
+
+.folio-bookmark {
+  display: grid;
+  gap: 0.05rem;
+  padding: 0.55rem 0.65rem 0.55rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 4px solid rgba(220, 60, 60, 0.65);
+  border-radius: 0 0.35rem 0.35rem 0;
+  background: linear-gradient(90deg, #121212 0%, #1a1a1a 100%);
+  color: #d8d8d8;
+  text-align: left;
+  box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.45);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease;
+}
+
+.folio-bookmark span:first-child {
+  font-family: var(--font-cinzel), serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.folio-bookmark span:last-child {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.folio-bookmark:hover {
+  transform: translateX(-3px);
+}
+
+.folio-bookmark-active {
+  border-left-color: #dc3c3c;
+  background: linear-gradient(90deg, #1f1010 0%, #2a1515 100%);
+  transform: translateX(-6px);
+}
+
+.folio-book-wrap {
+  grid-area: book;
+  position: relative;
+  min-height: 0;
+  overflow: visible;
+  perspective: 2200px;
+  perspective-origin: 50% 42%;
+  transform-style: preserve-3d;
+}
+
+.folio-book {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 0.35rem;
+  --folio-spine-overlay-width: clamp(0.72rem, 1.35vw, 0.95rem);
+  background: #111;
+  box-shadow:
+    0 34px 70px rgba(0, 0, 0, 0.62),
+    0 8px 18px rgba(0, 0, 0, 0.36);
+  transform-style: preserve-3d;
+}
+
+.folio-deathnote-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0.35rem;
+  transform-origin: 0% 50%;
+  transform-style: preserve-3d;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, transparent 28%),
+    linear-gradient(165deg, #121212 0%, #040404 52%, #0d0d0d 100%);
+  box-shadow:
+    0 28px 60px rgba(0, 0, 0, 0.65),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 0 calc(40px * var(--folio-cover-shadow, 0)) rgba(0, 0, 0, 0.45);
+  cursor: none;
+  text-align: inherit;
+}
+
+.folio-deathnote-cover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  width: calc(var(--folio-spine-overlay-width, 0.85rem) * 0.72);
+  background:
+    linear-gradient(90deg, #070707 0%, #151515 42%, #0a0a0a 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.35));
+  box-shadow:
+    inset -5px 0 10px rgba(0, 0, 0, 0.55),
+    2px 0 0 rgba(220, 60, 60, 0.18);
+  pointer-events: none;
+}
+
+.folio-deathnote-cover .folio-cover-face {
+  position: relative;
+  z-index: 2;
+}
+
+.folio-deathnote-cover:disabled {
+  cursor: none;
+}
+
+.folio-cover-face {
+  display: grid;
+  place-content: center;
+  gap: 0.65rem;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+}
+
+.folio-cover-eyebrow {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(220, 60, 60, 0.8);
+}
+
+.folio-cover-title {
+  font-family: var(--font-cinzel), serif;
+  font-size: clamp(2rem, 7vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  color: #e8e8e8;
+}
+
+.folio-cover-name {
+  font-family: var(--font-caveat), cursive;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.folio-cover-rule {
+  max-width: 16rem;
+  margin-inline: auto;
+  font-family: var(--font-caveat), cursive;
+  font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.folio-cover-open-note {
+  margin-top: 0.65rem;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(220, 60, 60, 0.78);
+}
+
+.folio-cover-corner {
+  position: absolute;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 2px solid rgba(192, 192, 192, 0.55);
+  pointer-events: none;
+}
+
+.folio-cover-corner-tl {
+  top: 0.65rem;
+  left: 0.65rem;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.folio-cover-corner-tr {
+  top: 0.65rem;
+  right: 0.65rem;
+  border-left: 0;
+  border-bottom: 0;
+}
+
+.folio-cover-corner-bl {
+  bottom: 0.65rem;
+  left: 0.65rem;
+  border-right: 0;
+  border-top: 0;
+}
+
+.folio-cover-corner-br {
+  right: 0.65rem;
+  bottom: 0.65rem;
+  border-left: 0;
+  border-top: 0;
+}
+
+.folio-turn-zone {
+  position: absolute;
+  top: 0;
+  z-index: 12;
+  width: min(28%, 9rem);
+  height: 100%;
+  border: 0;
+  background: transparent;
+  cursor: none;
+}
+
+.folio-turn-zone-forward {
+  right: 0;
+}
+
+.folio-turn-zone-back {
+  left: 0;
+}
+
+.folio-turn-zone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(220, 60, 60, 0.06));
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.folio-turn-zone-back::after {
+  background: linear-gradient(270deg, transparent, rgba(220, 60, 60, 0.06));
+}
+
+.folio-turn-zone:hover::after {
+  opacity: 1;
+}
+
+.folio-portfolio:not(.folio-portfolio-open) .folio-bookmarks,
+.folio-portfolio:not(.folio-portfolio-open) .folio-turn-controls {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.folio-spread {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 0;
+  height: 100%;
+  min-height: 0;
+  border-radius: 0.35rem;
+  background: #f7f5ef;
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.45),
+    0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.folio-spread > .folio-page-left {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.folio-spread > .folio-page-right {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.folio-spread::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  z-index: 2;
+  width: 1px;
+  transform: translateX(-50%);
+  background: rgba(72, 62, 48, 0.14);
+  box-shadow:
+    -1px 0 0 rgba(255, 255, 255, 0.42),
+    1px 0 0 rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+}
+
+.folio-turn-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 18;
+  height: 100%;
+  min-height: 0;
+  overflow: visible;
+  pointer-events: none;
+  perspective: 1800px;
+  perspective-origin: var(--folio-shadow-x, 72%) 50%;
+  transform-style: preserve-3d;
+}
+
+.folio-spread-under,
+.folio-spread-mask {
+  position: absolute;
+  inset: 0;
+}
+
+.folio-spread-under {
+  z-index: 1;
+}
+
+.folio-spread-mask {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.folio-page-ghost {
+  visibility: hidden;
+  background: transparent;
+  box-shadow: none;
+}
+
+.folio-flip-leaf {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.folio-flip-sheet {
+  position: absolute;
+  top: 0;
+  min-height: 0;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  transform-origin: 0% 50%;
+  will-change: transform;
+  border-radius: 0.2rem;
+  --folio-fold: 0;
+  --folio-turn-progress: 0;
+}
+
+.folio-flip-sheet-back {
+  transform-origin: 100% 50%;
+}
+
+.folio-flip-sheet::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 6;
+  width: 4px;
+  pointer-events: none;
+  opacity: calc(0.35 + var(--folio-fold, 0) * 0.55);
+  transform: translateZ(2px);
+}
+
+.folio-flip-sheet-forward::before {
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(210, 205, 195, 0.85) 35%,
+    rgba(120, 110, 100, 0.55) 100%
+  );
+}
+
+.folio-flip-sheet-back::before {
+  right: 0;
+  left: auto;
+  background: linear-gradient(
+    270deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(210, 205, 195, 0.85) 35%,
+    rgba(120, 110, 100, 0.55) 100%
+  );
+}
+
+.folio-page-fold {
+  position: absolute;
+  z-index: 8;
+  width: min(44%, 11rem);
+  height: min(44%, 11rem);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.folio-page-fold-forward {
+  right: 0;
+  bottom: 0;
+  transform-origin: 100% 100%;
+  background:
+    radial-gradient(circle at 100% 100%, rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.12) 46%, transparent 72%),
+    linear-gradient(135deg, transparent 38%, rgba(255, 255, 255, 0.28) 58%, rgba(255, 255, 255, 0.1) 100%);
+  box-shadow: -6px -6px 16px rgba(0, 0, 0, calc(var(--folio-fold, 0) * 0.16));
+}
+
+.folio-page-fold-back {
+  left: 0;
+  bottom: 0;
+  transform-origin: 0% 100%;
+  background:
+    radial-gradient(circle at 0% 100%, rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.12) 46%, transparent 72%),
+    linear-gradient(225deg, transparent 38%, rgba(255, 255, 255, 0.28) 58%, rgba(255, 255, 255, 0.1) 100%);
+  box-shadow: 6px -6px 16px rgba(0, 0, 0, calc(var(--folio-fold, 0) * 0.16));
+}
+
+.folio-flip-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.folio-flip-face-front {
+  transform: rotateY(0deg) translate3d(0, 0, 2px);
+}
+
+.folio-flip-face-reverse {
+  transform: rotateY(180deg) translate3d(0, 0, 2px);
+}
+
+.folio-flip-face .folio-page-turning {
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.folio-flip-face .folio-page-turning::before {
+  mix-blend-mode: normal;
+  opacity: 0.82;
+}
+
+.folio-flip-face-front::after,
+.folio-flip-face-reverse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.folio-flip-sheet-forward .folio-flip-face-front::after {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0%, transparent 14%),
+    radial-gradient(ellipse at 100% 100%, rgba(255, 255, 255, calc(var(--folio-fold) * 0.34)), transparent 58%);
+}
+
+.folio-flip-sheet-forward .folio-flip-face-reverse::after {
+  background:
+    linear-gradient(270deg, rgba(0, 0, 0, 0.08) 0%, transparent 14%),
+    radial-gradient(ellipse at 0% 100%, rgba(255, 255, 255, calc(var(--folio-fold) * 0.22)), transparent 58%);
+}
+
+.folio-flip-sheet-back .folio-flip-face-front::after {
+  background:
+    linear-gradient(270deg, rgba(0, 0, 0, 0.08) 0%, transparent 14%),
+    radial-gradient(ellipse at 0% 100%, rgba(255, 255, 255, calc(var(--folio-fold) * 0.34)), transparent 58%);
+}
+
+.folio-flip-sheet-back .folio-flip-face-reverse::after {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0%, transparent 14%),
+    radial-gradient(ellipse at 100% 100%, rgba(255, 255, 255, calc(var(--folio-fold) * 0.22)), transparent 58%);
+}
+
+.folio-turn-shadow {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at var(--folio-shadow-x, 72%) 50%,
+    rgba(0, 0, 0, 0.48) 0%,
+    transparent 62%
+  );
+  opacity: 0;
+}
+
+.folio-turn-forward {
+  --folio-shadow-x: 72%;
+}
+
+.folio-turn-backward {
+  --folio-shadow-x: 28%;
+}
+
+.folio-portfolio-turning .folio-bookmark,
+.folio-portfolio-turning .folio-turn-controls button {
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .folio-turn-shadow {
+    opacity: 0 !important;
+  }
+}
+
+.folio-page {
+  position: relative;
+  overflow: hidden;
+  padding:
+    var(--folio-rule-offset)
+    var(--folio-pad-x)
+    calc(var(--folio-line) * 1.25);
+  padding-left: calc(var(--folio-pad-x) + 0.55rem);
+  font-family: var(--font-caveat), "Segoe Script", cursive;
+  font-size: var(--folio-script);
+  font-weight: 500;
+  line-height: var(--folio-line);
+  letter-spacing: 0.015em;
+  color: var(--folio-ink);
+  background-color: #f7f5ef;
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(var(--folio-pad-x) + 0.1rem),
+      var(--folio-margin-rule) calc(var(--folio-pad-x) + 0.1rem),
+      var(--folio-margin-rule) calc(var(--folio-pad-x) + 0.22rem),
+      transparent calc(var(--folio-pad-x) + 0.22rem)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--folio-line) - 1px),
+      var(--folio-rule) calc(var(--folio-line) - 1px),
+      var(--folio-rule) var(--folio-line)
+    ),
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.35), transparent 42%),
+    radial-gradient(circle at 82% 88%, rgba(0, 0, 0, 0.03), transparent 38%),
+    repeating-linear-gradient(
+      105deg,
+      rgba(35, 25, 15, 0.018) 0,
+      rgba(35, 25, 15, 0.018) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+  background-size: 100% 100%, 100% var(--folio-line), 100% 100%, 100% 100%, 100% 100%;
+  background-position: 0 0, 0 0, 0 0, 0 0;
+  background-repeat: no-repeat, repeat, no-repeat, no-repeat, repeat;
+}
+
+.folio-page::before,
+.folio-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.folio-page::before {
+  z-index: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.32), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.04)),
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.24), transparent 58%);
+  mix-blend-mode: multiply;
+}
+
+.folio-page::after {
+  z-index: 1;
+  border: 1px solid rgba(105, 91, 68, 0.18);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 -18px 28px rgba(85, 65, 40, 0.045);
+}
+
+.folio-page :where(p, h1, h2, h3, li, dt, dd, address, span, a) {
+  position: relative;
+  z-index: 2;
+  line-height: var(--folio-line);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.folio-page :where(p, h1, h2, h3, ul, ol, dl, address) {
+  margin: 0;
+}
+
+.folio-page :where(p, h2, h3, li, dt, dd, .folio-entry) + :where(p, h2, h3, li, dt, dd, .folio-entry, ul, ol) {
+  margin-top: var(--folio-line);
+}
+
+.folio-script-label {
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.78);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(180, 40, 40, 0.82);
+}
+
+.folio-page > :not(.folio-page-num) {
+  position: relative;
+  top: 0.07rem;
+}
+
+.folio-page-left {
+  position: relative;
+  z-index: 1;
+  border-radius: 0.35rem 0 0 0.35rem;
+  box-shadow:
+    inset 10px 0 14px rgba(0, 0, 0, 0.05),
+    inset -1px 0 0 rgba(0, 0, 0, 0.055);
+}
+
+.folio-page-right {
+  position: relative;
+  z-index: 0;
+  border-radius: 0 0.35rem 0.35rem 0;
+  box-shadow:
+    inset -10px 0 14px rgba(0, 0, 0, 0.05),
+    inset 1px 0 0 rgba(255, 255, 255, 0.38);
+}
+
+.folio-page-left::after {
+  border: 1px solid rgba(105, 91, 68, 0.18);
+  border-right: 1px solid rgba(88, 78, 62, 0.09);
+}
+
+.folio-page-right::after {
+  border: 1px solid rgba(105, 91, 68, 0.18);
+  border-left: 0;
+}
+
+.folio-page-right h1 {
+  margin-top: 0;
+  font-family: var(--font-caveat), cursive;
+  font-size: var(--folio-script-xl);
+  font-weight: 700;
+  line-height: calc(var(--folio-line) * 2);
+  min-height: calc(var(--folio-line) * 2);
+  color: var(--folio-ink);
+}
+
+.folio-vol {
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script-xl) * 1.2);
+  font-weight: 700;
+  line-height: calc(var(--folio-line) * 2);
+  min-height: calc(var(--folio-line) * 2);
+  color: rgba(20, 20, 20, 0.14);
+}
+
+.folio-chapter-mark {
+  margin-top: 0;
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.82);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(180, 40, 40, 0.82);
+}
+
+.folio-chapter-title {
+  margin-top: 0;
+  font-family: var(--font-caveat), cursive;
+  font-size: var(--folio-script-lg);
+  font-weight: 700;
+  line-height: calc(var(--folio-line) * 2);
+  min-height: calc(var(--folio-line) * 2);
+  color: var(--folio-ink);
+}
+
+.folio-left-note {
+  margin-top: 0;
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.86);
+  font-weight: 500;
+  line-height: var(--folio-line);
+  color: rgba(20, 20, 20, 0.58);
+}
+
+.folio-margin-note {
+  margin-top: 0;
+  padding-left: 0.55rem;
+  border-left: 2px solid rgba(180, 40, 40, 0.42);
+  font-family: var(--font-caveat), cursive;
+  font-size: var(--folio-script);
+  font-weight: 500;
+  font-style: italic;
+  line-height: var(--folio-line);
+  color: var(--folio-ink-soft);
+}
+
+.folio-index,
+.folio-catalog,
+.folio-principles {
+  margin-top: 0;
+  padding-left: 0.2rem;
+  list-style: none;
+}
+
+.folio-index li,
+.folio-catalog li,
+.folio-principles li {
+  font-family: var(--font-caveat), cursive;
+  font-size: var(--folio-script);
+  font-weight: 500;
+  line-height: var(--folio-line);
+}
+
+.folio-right-kicker {
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.8);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgba(180, 40, 40, 0.78);
+}
+
+.folio-lede {
+  margin-top: 0;
+  max-width: 100%;
+  font-family: var(--font-caveat), cursive;
+  font-size: var(--folio-script);
+  font-weight: 500;
+  line-height: var(--folio-line);
+  color: var(--folio-ink-soft);
+}
+
+.folio-metrics {
+  display: grid;
+  gap: 0;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.folio-metrics > div + div {
+  margin-top: var(--folio-line);
+}
+
+.folio-metrics dt + dd {
+  margin-top: 0;
+}
+
+@media (min-width: 520px) {
+  .folio-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.folio-metrics dt {
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.76);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: rgba(20, 20, 20, 0.52);
+}
+
+.folio-metrics dd {
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 1.08);
+  font-weight: 700;
+  line-height: var(--folio-line);
+  color: var(--folio-ink);
+}
+
+.folio-entries {
+  display: grid;
+  gap: var(--folio-line);
+}
+
+.folio-entry {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.folio-entry-ref,
+.folio-entry-date,
+.folio-entry-type {
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.76);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(180, 40, 40, 0.72);
+}
+
+.folio-entry h3 {
+  margin-top: 0;
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 1.08);
+  font-weight: 700;
+  line-height: var(--folio-line);
+  color: var(--folio-ink);
+}
+
+.folio-entry-eyebrow,
+.folio-entry-org {
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.92);
+  font-weight: 500;
+  color: rgba(61, 37, 23, 0.62);
+}
+
+.folio-entry p {
+  margin-top: 0;
+  font-family: var(--font-caveat), cursive;
+  font-size: var(--folio-script);
+  font-weight: 500;
+  line-height: var(--folio-line);
+  color: var(--folio-ink-soft);
+}
+
+.folio-entry-tags {
+  margin-top: 0;
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.88);
+  font-weight: 500;
+  color: rgba(61, 37, 23, 0.58);
+}
+
+.folio-entry-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: calc(var(--folio-line) * 0.35);
+}
+
+.folio-entry-links a {
+  padding: 0 0.4rem;
+  border: 1px solid rgba(107, 66, 38, 0.3);
+  border-radius: 999px;
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.82);
+  font-weight: 600;
+  line-height: calc(var(--folio-line) - 0.2rem);
+  color: #5c3317;
+}
+
+.folio-page-letter {
+  font-family: var(--font-caveat), cursive;
+}
+
+.folio-letter-date {
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.82);
+  font-weight: 600;
+  color: rgba(20, 20, 20, 0.52);
+}
+
+.folio-letter-salutation {
+  margin-top: 0;
+  font-size: var(--folio-script);
+  font-weight: 600;
+}
+
+.folio-letter-body {
+  margin-top: 0;
+  max-width: 100%;
+  font-size: var(--folio-script);
+  font-weight: 500;
+  line-height: var(--folio-line);
+  color: var(--folio-ink-soft);
+}
+
+.folio-address {
+  display: grid;
+  gap: calc(var(--folio-line) * 0.65);
+  margin-top: var(--folio-line);
+  font-style: normal;
+}
+
+.folio-address p {
+  display: grid;
+  gap: 0;
+}
+
+.folio-address span {
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.76);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: rgba(180, 40, 40, 0.72);
+}
+
+.folio-address a {
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.98);
+  font-weight: 600;
+  color: #3d2517;
+  overflow-wrap: anywhere;
+}
+
+.folio-letter-signoff {
+  margin-top: var(--folio-line);
+  font-size: calc(var(--folio-script) * 1.02);
+  font-weight: 500;
+}
+
+.folio-letter-name {
+  margin-top: calc(var(--folio-line) * 0.35);
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 1.15);
+  font-weight: 700;
+}
+
+.folio-wax-seal {
+  display: grid;
+  place-items: center;
+  width: clamp(3.5rem, 10vw, 4.5rem);
+  height: clamp(3.5rem, 10vw, 4.5rem);
+  margin-top: var(--folio-line);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #c0392b, #7b241c 70%);
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.25),
+    0 4px 10px rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.95);
+  font-weight: 700;
+  transform: rotate(-12deg);
+}
+
+.folio-page-num {
+  position: absolute;
+  bottom: calc(var(--folio-line) * 0.25);
+  font-family: var(--font-caveat), cursive;
+  font-size: calc(var(--folio-script) * 0.72);
+  font-weight: 600;
+  line-height: var(--folio-line);
+  color: rgba(20, 20, 20, 0.42);
+}
+
+.folio-page-num-left {
+  left: var(--folio-pad-x);
+}
+
+.folio-page-num-right {
+  right: var(--folio-pad-x);
+}
+
+.folio-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  z-index: 3;
+  display: flex;
+  width: auto;
+  max-width: 1.25rem;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0.08rem;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: transparent;
+}
+
+.folio-spine::before,
+.folio-spine::after {
+  display: none;
+}
+
+.folio-spine span {
+  position: relative;
+  z-index: 1;
+  writing-mode: vertical-rl;
+  font-family: var(--font-cinzel), serif;
+  font-size: 0.48rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(120, 20, 20, 0.72);
+  text-shadow:
+    0 0 6px rgba(247, 245, 239, 0.95),
+    0 0 2px rgba(247, 245, 239, 0.85),
+    0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.folio-turn-controls {
+  grid-area: turn;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  color: rgba(236, 236, 236, 0.72);
+}
+
+.folio-turn-controls button {
+  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba(220, 60, 60, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #ececec;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.72rem;
+}
+
+.folio-turn-controls button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.folio-turn-controls p {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.68rem;
+}
+
+.portfolio-picker-backdrop-folio {
+  background: rgba(0, 0, 0, 0.88);
+}
+
+.portfolio-picker-panel-folio {
+  border: 1px solid rgba(220, 60, 60, 0.35);
+  border-radius: 0.5rem;
+  background: #101010;
+  color: #ececec;
+}
+
+.portfolio-switcher-folio .portfolio-chip,
+.portfolio-switcher-folio .portfolio-shuffle {
+  border-color: rgba(107, 66, 38, 0.25);
+  background: rgba(255, 255, 255, 0.65);
+  color: #3d2517;
+}
+
+.portfolio-switcher-folio .portfolio-chip-active {
+  border-color: #5c3317;
+  background: rgba(139, 90, 43, 0.12);
+}
+
+.portfolio-picker-panel-folio .portfolio-picker-head {
+  border-bottom-color: rgba(107, 66, 38, 0.2);
+}
+
+.portfolio-picker-panel-folio .portfolio-picker-close,
+.portfolio-picker-panel-folio .portfolio-picker-kicker,
+.portfolio-picker-panel-folio .portfolio-picker-title {
+  color: inherit;
+}
+
+@media (max-width: 900px) {
+  html[data-portfolio="folio"] {
+    --folio-rule-offset: calc(var(--folio-line) * 1.5);
+  }
+
+  .folio-portfolio {
+    grid-template:
+      "chrome" auto
+      "book" 1fr
+      "turn" auto
+      / minmax(0, 1fr);
+    padding: clamp(0.55rem, 2vw, 0.85rem);
+  }
+
+  .folio-chrome-title {
+    font-size: clamp(0.85rem, 3.8vw, 1.05rem);
+  }
+
+  .folio-bookmarks {
+    position: fixed;
+    right: 0.55rem;
+    bottom: 4.25rem;
+    z-index: 40;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width: min(100%, 13rem);
+    padding-left: 0;
+    gap: 0.25rem;
+  }
+
+  .folio-bookmark {
+    padding: 0.35rem 0.45rem;
+    border-left-width: 3px;
+  }
+
+  .folio-bookmark span:last-child {
+    display: none;
+  }
+
+  .folio-spread {
+    min-height: 100%;
+  }
+
+  .folio-page {
+    min-height: min(52vh, 28rem);
+  }
+
+  .folio-page-left {
+    border-radius: 0.35rem 0 0 0.35rem;
+  }
+
+  .folio-page-right {
+    border-radius: 0 0.35rem 0.35rem 0;
+  }
+
+  .folio-turn-zone {
+    width: min(34%, 7rem);
+  }
+}
+
+@media (max-width: 640px) {
+  html[data-portfolio="folio"] {
+    --folio-line: clamp(1.35rem, 4.8vw, 1.55rem);
+    --folio-script: clamp(0.92rem, 3.8vw, 1.08rem);
+    --folio-script-lg: clamp(1.12rem, 4.8vw, 1.45rem);
+    --folio-script-xl: clamp(1.35rem, 6vw, 1.75rem);
+  }
+
+  .folio-portfolio {
+    padding-bottom: 0.45rem;
+  }
+
+  .folio-book {
+    --folio-spine-overlay-width: 0.68rem;
+  }
+
+  .folio-spine span {
+    font-size: 0.48rem;
+    letter-spacing: 0.16em;
+  }
+
+  .folio-turn-controls {
+    gap: 0.45rem;
+    padding-top: 0.45rem;
+  }
+
+  .folio-turn-controls button {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.66rem;
+  }
+
+  .folio-metrics {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-height: 720px) {
+  html[data-portfolio="folio"] {
+    --folio-line: clamp(1.3rem, 3.2vmin, 1.55rem);
+    --folio-rule-offset: calc(var(--folio-line) * 1.5);
+  }
+}

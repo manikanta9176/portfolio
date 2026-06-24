@@ -44,6 +44,11 @@ export const portfolios: PortfolioDefinition[] = [
     label: "Oddity Museum",
     tagline: "Scene-jumping halls — no scroll, no rails, pure exhibit chaos",
   },
+  {
+    id: "folio",
+    label: "Death Note Folio",
+    tagline: "Black notebook — closed cover opens, pages turn with weight",
+  },
 ];
 
 export const portfolioIds = portfolios.map((portfolio) => portfolio.id);

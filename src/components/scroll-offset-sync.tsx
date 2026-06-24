@@ -28,6 +28,8 @@ function resolveChrome(portfolioId: PortfolioId): HTMLElement | null {
       return mobileSideRail ? document.querySelector<HTMLElement>(".timeline-rail") : null;
     case "oddity":
       return document.querySelector<HTMLElement>(".oddity-booth");
+    case "folio":
+      return document.querySelector<HTMLElement>(".folio-chrome");
   }
 }
 

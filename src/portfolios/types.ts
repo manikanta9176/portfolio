@@ -6,7 +6,8 @@ export type PortfolioId =
   | "swiss"
   | "bento"
   | "timeline"
-  | "oddity";
+  | "oddity"
+  | "folio";
 
 export interface PortfolioDefinition {
   id: PortfolioId;

@@ -1,11 +1,23 @@
 import type { Metadata } from "next";
-import { DM_Sans, IBM_Plex_Mono, JetBrains_Mono, Syne } from "next/font/google";
+import { Caveat, Cinzel, DM_Sans, IBM_Plex_Mono, JetBrains_Mono, Syne } from "next/font/google";
 import { PortfolioProvider } from "@/portfolios/provider";
 import { DEFAULT_PORTFOLIO_ID, PORTFOLIO_STORAGE_KEY, portfolioIds } from "@/portfolios/registry";
 import { siteConfig, timeline } from "@/lib/profile";
 import "./globals.css";
 import "./site-cursor.css";
 import "./portfolios.css";
+
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "900"],
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 const syne = Syne({
   variable: "--font-syne",
@@ -124,7 +136,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${dmSans.variable} ${ibmPlexMono.variable} ${jetBrainsMono.variable} h-full antialiased`}
+      className={`${syne.variable} ${dmSans.variable} ${ibmPlexMono.variable} ${jetBrainsMono.variable} ${caveat.variable} ${cinzel.variable} h-full antialiased`}
       data-portfolio="editorial"
       suppressHydrationWarning
     >
