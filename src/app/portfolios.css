@@ -3211,6 +3211,7 @@ html[data-portfolio="oddity"] body {
 
 html[data-portfolio="folio"] {
   --folio-line: clamp(1.45rem, 3.6vmin, 1.75rem);
+  --folio-spread-width: min(54rem, calc(100vw - 15rem));
   --folio-ink: #141414;
   --folio-ink-soft: rgba(20, 20, 20, 0.78);
   --folio-rule: rgba(40, 52, 88, 0.24);
@@ -3331,15 +3332,23 @@ html[data-portfolio="folio"] body {
 .folio-book-wrap {
   grid-area: book;
   position: relative;
+  justify-self: center;
+  width: min(100%, var(--folio-spread-width));
   min-height: 0;
   overflow: visible;
   perspective: 2200px;
   perspective-origin: 50% 42%;
   transform-style: preserve-3d;
+  transition: width 1.4s cubic-bezier(0.83, 0, 0.17, 1);
+}
+
+.folio-portfolio.folio-phase-closed .folio-book-wrap {
+  width: min(100%, calc(var(--folio-spread-width) / 2));
 }
 
 .folio-book {
   position: relative;
+  width: 100%;
   height: 100%;
   min-height: 0;
   overflow: hidden;
@@ -3350,6 +3359,14 @@ html[data-portfolio="folio"] body {
     0 34px 70px rgba(0, 0, 0, 0.62),
     0 8px 18px rgba(0, 0, 0, 0.36);
   transform-style: preserve-3d;
+}
+
+.folio-portfolio.folio-phase-closed .folio-book {
+  box-shadow:
+    0 28px 56px rgba(0, 0, 0, 0.58),
+    0 8px 18px rgba(0, 0, 0, 0.34),
+    3px 0 0 rgba(255, 255, 255, 0.04),
+    6px 0 10px rgba(0, 0, 0, 0.28);
 }
 
 .folio-deathnote-cover {
@@ -3370,6 +3387,25 @@ html[data-portfolio="folio"] body {
     inset 0 0 calc(40px * var(--folio-cover-shadow, 0)) rgba(0, 0, 0, 0.45);
   cursor: none;
   text-align: inherit;
+}
+
+.folio-portfolio.folio-phase-closed .folio-deathnote-cover {
+  border-radius: 0.35rem 0.2rem 0.2rem 0.35rem;
+  box-shadow:
+    0 28px 60px rgba(0, 0, 0, 0.65),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    3px 0 0 rgba(255, 255, 255, 0.05),
+    5px 0 12px rgba(0, 0, 0, 0.35);
+}
+
+.folio-portfolio.folio-phase-closed .folio-cover-title {
+  font-size: clamp(1.45rem, 5.5vw, 2.35rem);
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+}
+
+.folio-portfolio.folio-phase-closed .folio-cover-face {
+  padding: 1.35rem;
 }
 
 .folio-deathnote-cover::before {
@@ -3782,6 +3818,10 @@ html[data-portfolio="folio"] body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .folio-book-wrap {
+    transition: none;
+  }
+
   .folio-turn-shadow {
     opacity: 0 !important;
   }
@@ -4326,6 +4366,7 @@ html[data-portfolio="folio"] body {
 @media (max-width: 900px) {
   html[data-portfolio="folio"] {
     --folio-rule-offset: calc(var(--folio-line) * 1.5);
+    --folio-spread-width: min(100%, calc(100vw - 1.1rem));
   }
 
   .folio-portfolio {
@@ -4394,6 +4435,10 @@ html[data-portfolio="folio"] body {
 
   .folio-portfolio {
     padding-bottom: 0.45rem;
+  }
+
+  .folio-portfolio.folio-phase-closed .folio-book-wrap {
+    width: min(88vw, 19rem);
   }
 
   .folio-book {
