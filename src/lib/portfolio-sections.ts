@@ -8,6 +8,7 @@ export const portfolioSectionIds: Record<PortfolioId, readonly string[]> = {
   swiss: ["intro", "craft", "journey", "work", "contact"],
   bento: ["intro", "craft", "journey", "work", "contact"],
   timeline: ["intro", "craft", "journey", "work", "contact"],
+  oddity: ["intro", "craft", "journey", "work", "contact"],
 };
 
 export function getPortfolioSectionIds(portfolioId: PortfolioId) {

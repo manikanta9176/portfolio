@@ -12,6 +12,7 @@ import { NoirPortfolio } from "@/portfolios/noir";
 import { SwissPortfolio } from "@/portfolios/swiss";
 import { TerminalPortfolio } from "@/portfolios/terminal";
 import { TimelinePortfolio } from "@/portfolios/timeline";
+import { OddityPortfolio } from "@/portfolios/oddity";
 import type { PortfolioId } from "@/portfolios/types";
 
 const portfolioViews: Record<PortfolioId, ComponentType> = {
@@ -22,6 +23,7 @@ const portfolioViews: Record<PortfolioId, ComponentType> = {
   swiss: SwissPortfolio,
   bento: BentoPortfolio,
   timeline: TimelinePortfolio,
+  oddity: OddityPortfolio,
 };
 
 export function PortfolioRouter() {

@@ -71,6 +71,10 @@ export function PortfolioPicker({ className = "" }: PortfolioPickerProps) {
       kicker: "Route",
       title: "Jump to another journey layout.",
     },
+    oddity: {
+      kicker: "Gift shop exit",
+      title: "Leave this hall for another dimension of the same person.",
+    },
   }[portfolioId];
 
   const dialog = open ? (

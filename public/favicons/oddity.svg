@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="MP">
+<style>@font-face{font-family:"Syne";font-style:normal;font-weight:800;src:url("/fonts/syne-800.woff") format("woff");}</style>
+<rect width="32" height="32" fill="#2b003d"/>
+<circle cx="16" cy="15" r="9" stroke="#ff4fd8" stroke-width="2"/>
+<circle cx="16" cy="15" r="3" fill="#c8ff00"/>
+<path d="M8 26 Q16 22 24 26" stroke="#ff4fd8" stroke-width="1.5" fill="none"/>
+<text x="16" y="17" text-anchor="middle" fill="#fff" font-family="'Syne', sans-serif" font-weight="800" font-size="7">MP</text>
+</svg>

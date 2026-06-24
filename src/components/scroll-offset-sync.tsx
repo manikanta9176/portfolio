@@ -26,8 +26,8 @@ function resolveChrome(portfolioId: PortfolioId): HTMLElement | null {
       return mobileSideRail ? document.querySelector<HTMLElement>(".swiss-index") : null;
     case "timeline":
       return mobileSideRail ? document.querySelector<HTMLElement>(".timeline-rail") : null;
-    default:
-      return null;
+    case "oddity":
+      return document.querySelector<HTMLElement>(".oddity-booth");
   }
 }
 

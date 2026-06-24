@@ -39,6 +39,11 @@ export const portfolios: PortfolioDefinition[] = [
     label: "Timeline Rail",
     tagline: "Vertical journey line with alternating story panels",
   },
+  {
+    id: "oddity",
+    label: "Oddity Museum",
+    tagline: "Scene-jumping halls — no scroll, no rails, pure exhibit chaos",
+  },
 ];
 
 export const portfolioIds = portfolios.map((portfolio) => portfolio.id);
