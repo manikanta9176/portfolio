@@ -165,7 +165,7 @@ export function SwissPortfolio() {
         </div>
 
         <div className="swiss-index-footer">
-          <PortfolioPicker className="swiss-picker-trigger" showMeta={false} />
+          <PortfolioPicker className="swiss-picker-trigger" />
         </div>
       </aside>
 

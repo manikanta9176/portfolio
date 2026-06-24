@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { PortfolioSwitcher } from "@/components/portfolio-switcher";
 import { usePortfolio } from "@/portfolios/provider";
@@ -8,17 +8,16 @@ import { dispatchSiteCursorSync } from "@/lib/site-cursor";
 
 interface PortfolioPickerProps {
   className?: string;
-  label?: string;
-  showMeta?: boolean;
 }
 
-export function PortfolioPicker({
-  className = "",
-  label = "Layouts",
-  showMeta = true,
-}: PortfolioPickerProps) {
+export function PortfolioPicker({ className = "" }: PortfolioPickerProps) {
   const { portfolioId, portfolio } = usePortfolio();
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    triggerRef.current?.setAttribute("aria-expanded", open ? "true" : "false");
+  }, [open]);
 
   useEffect(() => {
     if (!open) {
@@ -109,6 +108,9 @@ export function PortfolioPicker({
   return (
     <>
       <button
+        ref={triggerRef}
+        aria-haspopup="dialog"
+        aria-label={`Current look: ${portfolio.label}. Change look.`}
         className={`portfolio-picker-trigger portfolio-picker-trigger-${portfolioId} ${className}`.trim()}
         onClick={(event) => {
           dispatchSiteCursorSync(event.clientX, event.clientY);
@@ -116,10 +118,12 @@ export function PortfolioPicker({
         }}
         type="button"
       >
-        <span className="portfolio-picker-trigger-label">{label}</span>
-        {showMeta ? (
-          <span className="portfolio-picker-trigger-meta">{portfolio.label}</span>
-        ) : null}
+        <span className="portfolio-picker-trigger-copy">
+          <span className="portfolio-picker-trigger-name">{portfolio.label}</span>
+          <span aria-hidden="true" className="portfolio-picker-trigger-chevron">
+            ▾
+          </span>
+        </span>
       </button>
 
       {dialog ? createPortal(dialog, document.body) : null}

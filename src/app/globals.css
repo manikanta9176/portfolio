@@ -331,6 +331,14 @@ main {
     letter-spacing: -0.04em;
   }
 
+  .site-header-end .portfolio-picker-trigger.site-command {
+    flex-shrink: 1;
+    min-width: 0;
+    max-width: min(100%, 15rem);
+    font-size: inherit;
+    letter-spacing: normal;
+  }
+
   .site-header-start,
   .site-header-end {
     display: flex;
@@ -372,8 +380,8 @@ main {
       gap: 0.45rem;
     }
 
-    .site-header-end .portfolio-picker-trigger-meta {
-      display: none;
+    .site-header-end .portfolio-picker-trigger-name {
+      max-width: 6.5rem;
     }
 
     .site-command {
@@ -394,8 +402,8 @@ main {
   }
 
   @media (min-width: 768px) and (max-width: 1023px) {
-    .site-header-end .portfolio-picker-trigger-meta {
-      display: none;
+    .site-header-end .portfolio-picker-trigger-name {
+      max-width: 6.5rem;
     }
   }
 

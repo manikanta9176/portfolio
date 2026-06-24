@@ -165,7 +165,7 @@ export function TimelinePortfolio() {
         </div>
 
         <div className="timeline-rail-footer">
-          <PortfolioPicker className="timeline-picker-trigger" showMeta={false} />
+          <PortfolioPicker className="timeline-picker-trigger" />
         </div>
       </aside>
 

@@ -161,7 +161,7 @@ export function BrutalistPortfolio() {
         </div>
 
         <div className="brutalist-rail-footer">
-          <PortfolioPicker className="brutalist-rail-picker" showMeta={false} />
+          <PortfolioPicker className="brutalist-rail-picker" />
         </div>
       </aside>
 

@@ -22,10 +22,10 @@ export function PortfolioSwitcher({
     >
       <div className="portfolio-switcher-head">
         <div>
-          <p className="portfolio-switcher-kicker">Available layouts</p>
+          <p className="portfolio-switcher-kicker">Same site, different look</p>
           {!compact ? (
             <p className="portfolio-switcher-copy">
-              Each portfolio is a full layout built from the same profile content.
+              Pick the version that feels right to you. Your choice is remembered.
             </p>
           ) : null}
         </div>
@@ -38,7 +38,7 @@ export function PortfolioSwitcher({
         </button>
       </div>
       <div
-        aria-label="Available layouts"
+        aria-label="Choose a look"
         className="portfolio-switcher-grid"
         role="radiogroup"
       >

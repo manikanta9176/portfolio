@@ -9,21 +9,23 @@
 .portfolio-picker-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
   max-width: 100%;
   min-width: 0;
   cursor: pointer;
   text-align: left;
 }
 
-.portfolio-picker-trigger-label {
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.portfolio-picker-trigger-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
-.portfolio-picker-trigger-meta {
+.portfolio-picker-trigger-name {
+  flex: 1 1 auto;
+  min-width: 0;
   font-family: var(--font-syne), sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
@@ -32,9 +34,16 @@
   white-space: nowrap;
 }
 
+.portfolio-picker-trigger-chevron {
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  line-height: 1;
+  opacity: 0.55;
+}
+
 @media (max-width: 640px) {
-  .portfolio-picker-trigger-meta {
-    display: none;
+  .portfolio-picker-trigger-name {
+    max-width: 7.5rem;
   }
 }
 
